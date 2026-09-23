@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>aws First Incubator · Gruppe 1 Hub & ERP Prompt Pro</title>
+  <title>aws First Incubator · Gruppe 1 Prompt Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -33,10 +33,10 @@
 </head>
 <body class="min-h-full flex flex-col font-sans selection:bg-bamou selection:text-slate-950">
 
-  <!-- Toast Container -->
+  <!-- Toast Notification Container -->
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Top Header -->
+  <!-- Top Navigation Header -->
   <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30 px-6 py-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
@@ -51,30 +51,30 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="font-extrabold text-lg tracking-tight text-white">aws First Incubator <span class="text-bamou">· Gruppe 1</span></h1>
-            <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-bamou/10 text-bamou border border-bamou/20">Batch 1 (2026/27)</span>
+            <h1 class="font-extrabold text-lg tracking-tight text-white">aws First Incubator <span class="text-bamou">· Prompt Hub</span></h1>
+            <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-bamou/10 text-bamou border border-bamou/20">Batch 1 · Gruppe 1</span>
           </div>
-          <p class="text-xs text-slate-400">Coach: THX (Marlene & Thomas) · Betreuung: Sophia · Location: Markhof Wien</p>
+          <p class="text-xs text-slate-400">One-Shot Megaprompts & Live-Apps für alle Gruppe 1 Teams (Markhof Wien)</p>
         </div>
       </div>
 
       <!-- Tab Switcher -->
       <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-sm">
-        <button onclick="switchTab('startups')" id="tabBtn-startups" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-white bg-slate-800 shadow-sm flex items-center gap-2">
-          <i data-lucide="users" class="w-4 h-4 text-bamou"></i>
-          <span>Gruppe 1 Startups (7)</span>
-        </button>
-        <button onclick="switchTab('prompt')" id="tabBtn-prompt" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+        <button onclick="switchTab('prompt')" id="tabBtn-prompt" class="tab-btn px-4 py-1.5 rounded-lg font-bold transition-all text-white bg-slate-800 shadow-sm flex items-center gap-2">
           <i data-lucide="sparkles" class="w-4 h-4 text-bamou"></i>
-          <span>Prompt Pro</span>
+          <span>Megaprompts Copy-Paste (5)</span>
+        </button>
+        <button onclick="switchTab('startups')" id="tabBtn-startups" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <i data-lucide="users" class="w-4 h-4 text-bamou"></i>
+          <span>Startups Übersicht (7)</span>
         </button>
         <button onclick="switchTab('apps')" id="tabBtn-apps" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
           <i data-lucide="layers" class="w-4 h-4 text-bamou"></i>
-          <span>Live Apps & 3D (5)</span>
+          <span>Live-Apps</span>
         </button>
       </div>
 
-      <!-- Quick Action -->
+      <!-- GitHub Link -->
       <a href="https://github.com/servas-ai/aws-batch1-gruppe1-showcase" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-all border border-slate-700 flex items-center gap-2">
         <i data-lucide="github" class="w-4 h-4"></i>
         <span>servas-ai Repo ↗</span>
@@ -83,29 +83,100 @@
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Main Content Area -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-6">
 
     <!-- ========================================== -->
-    <!-- TAB 1: GRUPPE 1 STARTUPS                   -->
+    <!-- TAB 1: MEGAPROMPTS COPY-PASTE (DEFAULT)    -->
     <!-- ========================================== -->
-    <section id="tab-startups" class="space-y-6">
+    <section id="tab-prompt" class="space-y-6">
       
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span>One-Shot Megaprompts zum Kopieren</span>
+            <span class="text-xs px-2 py-0.5 rounded-md bg-bamou/10 text-bamou border border-bamou/20">Production-Ready</span>
+          </h2>
+          <p class="text-sm text-slate-400">Wähle ein Startup aus, klicke auf <strong>„Prompt kopieren“</strong> und füge ihn direkt in Claude, ChatGPT oder Antigravity ein.</p>
+        </div>
+
+        <button onclick="copyCurrentPrompt()" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-bamou/20 flex items-center gap-2 active:scale-95">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span id="copyBtnLabel">bamou Prompt kopieren</span>
+        </button>
+      </div>
+
+      <!-- Startup Prompt Selector Pills -->
+      <div class="flex flex-wrap gap-2 p-1.5 bg-slate-900/90 rounded-2xl border border-slate-800">
+        <button onclick="selectPrompt('bamou')" id="pnav-bamou" class="pnav-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-bamou text-slate-950 flex items-center gap-2 shadow-sm">
+          <span>bamou</span>
+          <span class="text-[10px] font-mono opacity-80">(B2B ERP)</span>
+        </button>
+
+        <button onclick="selectPrompt('lank')" id="pnav-lank" class="pnav-btn px-4 py-2 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <span>LANK</span>
+          <span class="text-[10px] font-mono opacity-80">(Hardware Shop)</span>
+        </button>
+
+        <button onclick="selectPrompt('phasefit')" id="pnav-phasefit" class="pnav-btn px-4 py-2 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <span>PhaseFit</span>
+          <span class="text-[10px] font-mono opacity-80">(FemTech PWA)</span>
+        </button>
+
+        <button onclick="selectPrompt('vamont')" id="pnav-vamont" class="pnav-btn px-4 py-2 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <span>VAMONT</span>
+          <span class="text-[10px] font-mono opacity-80">(3D Walltrainer)</span>
+        </button>
+
+        <button onclick="selectPrompt('playground')" id="pnav-playground" class="pnav-btn px-4 py-2 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <span>Playground Instruments</span>
+          <span class="text-[10px] font-mono opacity-80">(3D Synth Keyboard)</span>
+        </button>
+      </div>
+
+      <!-- Prompt Code Display Container -->
+      <div class="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl relative">
+        <div class="bg-slate-950 px-5 py-3.5 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <div class="flex items-center gap-2 font-mono">
+            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span id="promptFilename" class="ml-2 text-slate-200 font-bold">bamou-erp-megaprompt.md</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="text-[11px] text-slate-500 font-mono">Single-File HTML Output</span>
+            <button onclick="copyCurrentPrompt()" class="text-bamou hover:underline font-bold flex items-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Kopieren
+            </button>
+          </div>
+        </div>
+
+        <pre id="activePromptCode" class="p-6 text-xs md:text-sm font-mono text-slate-300 whitespace-pre-wrap leading-relaxed max-h-[560px] overflow-y-auto selection:bg-bamou selection:text-slate-950"></pre>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: GRUPPE 1 STARTUPS ÜBERSICHT         -->
+    <!-- ========================================== -->
+    <section id="tab-startups" class="space-y-6 hidden">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span>Startups in Gruppe 1 (aws First Incubator)</span>
+            <span>Startups in Gruppe 1</span>
             <span class="text-xs px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 border border-slate-700">7 Teams</span>
           </h2>
           <p class="text-sm text-slate-400">Vollständig recherchierte Gründer, Websites, Domains und Themenschwerpunkte.</p>
         </div>
       </div>
 
-      <!-- Startup Cards Grid -->
+      <!-- Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-        <!-- 1. bamou -->
-        <div class="rounded-2xl bg-slate-900 border border-bamou/40 p-5 flex flex-col justify-between hover:border-bamou transition-all shadow-md">
+        
+        <!-- bamou -->
+        <div class="rounded-2xl bg-slate-900 border border-bamou/40 p-5 flex flex-col justify-between hover:border-bamou transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
@@ -113,300 +184,182 @@
                   <svg class="h-full w-auto" viewBox="0 0 552 552" fill="none"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>
                 </div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">bamou</h3>
+                  <h3 class="font-bold text-white text-base">bamou</h3>
                   <span class="text-xs font-medium text-bamou">KMU-Software / B2B</span>
                 </div>
               </div>
               <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-bamou/20 text-bamou border border-bamou/30">Gruppe 1</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              „Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus.“ Modulares Cloud-ERP für österreichische Betriebe.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://bamou.at" target="_blank" class="text-bamou hover:underline font-mono">bamou.at ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Fokus:</span> <span class="text-slate-200">Faktura, CRM, Zeiterfassung</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Coach:</span> <span class="text-slate-200">THX (Marlene & Thomas)</span></div>
+            <p class="text-xs text-slate-300 mb-3">Modulares Cloud-ERP für österreichische KMU (Faktura, Zeiterfassung, CRM, BMD-Export).</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://bamou.at" target="_blank" class="text-bamou hover:underline font-mono">bamou.at ↗</a></div>
+              <div><span class="text-slate-500">Coach:</span> <span class="text-slate-300">THX (Marlene & Thomas)</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="./apps/bamou-erp.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-bamou hover:bg-bamou-hover text-slate-950 text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> ERP Suite öffnen
-            </a>
-            <button onclick="copyText('https://bamou.at', 'bamou.at kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <div class="flex gap-2">
+            <button onclick="selectPromptAndSwitch('bamou')" class="flex-1 py-1.5 rounded-lg bg-bamou hover:bg-bamou-hover text-slate-950 text-xs font-bold flex items-center justify-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Prompt kopieren
             </button>
+            <a href="./apps/bamou-erp.html" target="_blank" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white" title="App testen"><i data-lucide="play" class="w-4 h-4"></i></a>
           </div>
         </div>
 
-        <!-- 2. LANK -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+        <!-- LANK -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
-                  L
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">L</div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">LANK Technology</h3>
-                  <span class="text-xs font-medium text-cyan-400">Consumer & Alpine Hardware / B2C</span>
+                  <h3 class="font-bold text-white text-base">LANK Technology</h3>
+                  <span class="text-xs font-medium text-cyan-400">Carbon Hardware / B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">Gruppe 1</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              „Make it right, keep it light!“ High-Tech Carbon-Hardware für den Bergsport (u.a. LT SNOW lite Lawinenschaufel).
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://lanktechnology.com" target="_blank" class="text-cyan-400 hover:underline font-mono">lanktechnology.com ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Leo Aschberger & Nikolaus Kampelmühler</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Traun (OÖ) · FH OÖ Faserverbund</span></div>
+            <p class="text-xs text-slate-300 mb-3">High-Tech Faserverbund-Bergsport-Hardware (LT SNOW lite Carbon-Lawinenschaufel).</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://lanktechnology.com" target="_blank" class="text-cyan-400 hover:underline font-mono">lanktechnology.com ↗</a></div>
+              <div><span class="text-slate-500">Gründer:</span> <span class="text-slate-300">Leo Aschberger & Nikolaus Kampelmühler</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="./apps/lank-webshop.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-cyan-400"></i> Webshop Prototyp
-            </a>
-            <button onclick="copyText('https://lanktechnology.com', 'lanktechnology.com kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <div class="flex gap-2">
+            <button onclick="selectPromptAndSwitch('lank')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium flex items-center justify-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Prompt kopieren
             </button>
+            <a href="./apps/lank-webshop.html" target="_blank" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white" title="App testen"><i data-lucide="play" class="w-4 h-4"></i></a>
           </div>
         </div>
 
-        <!-- 3. PhaseFit -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+        <!-- PhaseFit -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold">
-                  PF
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold">PF</div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">PhaseFit</h3>
+                  <h3 class="font-bold text-white text-base">PhaseFit</h3>
                   <span class="text-xs font-medium text-rose-400">FemTech / B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">Gruppe 1</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              Cycle Intelligence: Zyklusbasiertes Fitnesstraining, Workouts & Ernährung abgestimmt auf die 4 weiblichen Hormonphasen.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://phasefit.app" target="_blank" class="text-rose-400 hover:underline font-mono">phasefit.app ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Michelle Köberl, Florian Tesarek, Elias Stahl</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Purkersdorf (NÖ)</span></div>
+            <p class="text-xs text-slate-300 mb-3">Cycle-Synced Fitness & Nutrition: Trainingspläne angepasst an die 4 weiblichen Hormonphasen.</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://phasefit.app" target="_blank" class="text-rose-400 hover:underline font-mono">phasefit.app ↗</a></div>
+              <div><span class="text-slate-500">Gründer:</span> <span class="text-slate-300">Michelle Köberl, Florian Tesarek, Elias Stahl</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="./apps/phasefit-app.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="smartphone" class="w-3.5 h-3.5 text-rose-400"></i> PWA App öffnen
-            </a>
-            <button onclick="copyText('https://phasefit.app', 'phasefit.app kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <div class="flex gap-2">
+            <button onclick="selectPromptAndSwitch('phasefit')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium flex items-center justify-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Prompt kopieren
             </button>
+            <a href="./apps/phasefit-app.html" target="_blank" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white" title="App testen"><i data-lucide="play" class="w-4 h-4"></i></a>
           </div>
         </div>
 
-        <!-- 4. VAMONT Walltrainer -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+        <!-- VAMONT Walltrainer -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
-                  V
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">V</div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">VAMONT Walltrainer</h3>
+                  <h3 class="font-bold text-white text-base">VAMONT Walltrainer</h3>
                   <span class="text-xs font-medium text-amber-400">Smart Fitness / B2B & B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">Gruppe 1</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              „Smart Strength. Everyday.“ Minimalistischer, wandmontierter Krafttrainer mit über 50 Übungen auf 0,3 m² Wandfläche.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://vamont.fit" target="_blank" class="text-amber-400 hover:underline font-mono">vamont.fit ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Daniel Altenhofer & Thomas Pöchtrager</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Altenfelden (OÖ) · tech2b</span></div>
+            <p class="text-xs text-slate-300 mb-3">Minimalistischer wandmontierter Krafttrainer mit über 50 Übungen auf 0,3 m² für Penthouses & Physio.</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://vamont.fit" target="_blank" class="text-amber-400 hover:underline font-mono">vamont.fit ↗</a></div>
+              <div><span class="text-slate-500">Gründer:</span> <span class="text-slate-300">Daniel Altenhofer & Thomas Pöchtrager</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="./apps/vamont-3d-landing.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="box" class="w-3.5 h-3.5 text-amber-400"></i> 3D Studio öffnen
-            </a>
-            <button onclick="copyText('https://vamont.fit', 'vamont.fit kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <div class="flex gap-2">
+            <button onclick="selectPromptAndSwitch('vamont')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium flex items-center justify-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Prompt kopieren
             </button>
+            <a href="./apps/vamont-3d-landing.html" target="_blank" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white" title="App testen"><i data-lucide="play" class="w-4 h-4"></i></a>
           </div>
         </div>
 
-        <!-- 5. Playground Instruments -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+        <!-- Playground Instruments -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold">
-                  PI
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold">PI</div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">Playground Instruments</h3>
+                  <h3 class="font-bold text-white text-base">Playground Instruments</h3>
                   <span class="text-xs font-medium text-orange-400">Music Hardware / B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">Gruppe 1</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              (ehem. Organic I) Hybrid-Tastatur: Kombination aus mechanischer QWERTY-Tastatur & 25-Tasten-Musiksynthesizer.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://playground-instruments.com" target="_blank" class="text-orange-400 hover:underline font-mono">playground-instruments.com ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Stefan Baumgartner, D. Sabathy, A. Petritz</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Graz · Unicorn Hub · Rising Star</span></div>
+            <p class="text-xs text-slate-300 mb-3">Hybrid-Tastatur: Mechanische QWERTY-Tastatur vereint mit 25-Tasten-Musiksynthesizer.</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://playground-instruments.com" target="_blank" class="text-orange-400 hover:underline font-mono">playground-instruments.com ↗</a></div>
+              <div><span class="text-slate-500">Gründer:</span> <span class="text-slate-300">Stefan Baumgartner, D. Sabathy, A. Petritz (Graz)</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="./apps/playground-instruments-3d.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="music" class="w-3.5 h-3.5 text-orange-400"></i> 3D Synth testen
-            </a>
-            <button onclick="copyText('https://playground-instruments.com', 'Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <div class="flex gap-2">
+            <button onclick="selectPromptAndSwitch('playground')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium flex items-center justify-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Prompt kopieren
             </button>
+            <a href="./apps/playground-instruments-3d.html" target="_blank" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white" title="App testen"><i data-lucide="play" class="w-4 h-4"></i></a>
           </div>
         </div>
 
-        <!-- 6. codeXX.health -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+        <!-- codeXX.health -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 font-bold">
-                  cXX
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 font-bold">cXX</div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">codeXX.health</h3>
+                  <h3 class="font-bold text-white text-base">codeXX.health</h3>
                   <span class="text-xs font-medium text-pink-400">FemTech / B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">Gruppe 1</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              Privacy-first cycle intelligence: KI-Hormoncoach mit 100 % On-Device AI zur Linderung von Menstruationsbeschwerden.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://codexx.health" target="_blank" class="text-pink-400 hover:underline font-mono">codexx.health ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Miriam Roček & Roman Sturzeis</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Inkubator:</span> <span class="text-slate-200">INiTS SCALEup / aws First</span></div>
+            <p class="text-xs text-slate-300 mb-3">Privacy-First Cycle Intelligence: KI-Hormoncoach mit 100% On-Device AI.</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://codexx.health" target="_blank" class="text-pink-400 hover:underline font-mono">codexx.health ↗</a></div>
+              <div><span class="text-slate-500">Gründer:</span> <span class="text-slate-300">Miriam Roček & Roman Sturzeis</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://codexx.health" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Website öffnen
-            </a>
-            <button onclick="copyText('https://codexx.health', 'codexx.health kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
+          <a href="https://codexx.health" target="_blank" class="py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center flex items-center justify-center gap-1">
+            Website öffnen ↗
+          </a>
         </div>
 
-        <!-- 7. Fintaro (Martin & Team) -->
-        <div class="rounded-2xl bg-slate-900 border border-indigo-500/40 p-5 flex flex-col justify-between hover:border-indigo-500 transition-all shadow-md">
+        <!-- Fintaro (Martin & Team) -->
+        <div class="rounded-2xl bg-slate-900 border border-indigo-500/40 p-5 flex flex-col justify-between hover:border-indigo-500 transition-all">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold">
-                  F
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold">F</div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">Fintaro</h3>
+                  <h3 class="font-bold text-white text-base">Fintaro</h3>
                   <span class="text-xs font-medium text-indigo-400">KMU-Software / B2B</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Dein Team</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">Dein Team</span>
             </div>
-            
-            <p class="text-xs text-slate-300 mb-4">
-              „Fintaro findet, was fehlt.“ KI-gestützte Vorbuchhaltung & deterministische Multi-Channel-Belegbeschaffung mit Runbooks.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://fintaro.ai" target="_blank" class="text-indigo-400 hover:underline font-mono">fintaro.ai ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Team:</span> <span class="text-slate-200">Larissa Haubner, Jan, David, Martin</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Ernsthofen · Fintaro AI FlexCo</span></div>
+            <p class="text-xs text-slate-300 mb-3">KI-gestützte Vorbuchhaltung & deterministische Multi-Channel-Belegbeschaffung mit Runbooks.</p>
+            <div class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 mb-3 space-y-1">
+              <div><span class="text-slate-500">Website:</span> <a href="https://fintaro.ai" target="_blank" class="text-indigo-400 hover:underline font-mono">fintaro.ai ↗</a></div>
+              <div><span class="text-slate-500">Team:</span> <span class="text-slate-300">Larissa Haubner, Jan, David, Martin</span></div>
             </div>
           </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://fintaro.ai" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> fintaro.ai öffnen
-            </a>
-            <button onclick="copyText('https://fintaro.ai', 'fintaro.ai kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
+          <a href="https://fintaro.ai" target="_blank" class="py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold text-center flex items-center justify-center gap-1">
+            fintaro.ai öffnen ↗
+          </a>
         </div>
 
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 2: PROMPT PRO (BAMOU ERP)              -->
-    <!-- ========================================== -->
-    <section id="tab-prompt" class="space-y-6 hidden">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-        <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span>Prompt Pro: bamou ERP Single-File One-Shot</span>
-            <span class="text-xs px-2 py-0.5 rounded-md bg-bamou/10 text-bamou border border-bamou/20">Production-Grade</span>
-          </h2>
-          <p class="text-sm text-slate-400">Instruiert Claude 3.7, GPT-4o/6 oder Antigravity, das vollständige ERP-System in einer einzigen HTML-Datei nachzubauen.</p>
-        </div>
-
-        <button onclick="copyPromptPro()" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all shadow-md shadow-bamou/20 flex items-center gap-2 active:scale-95">
-          <i data-lucide="copy" class="w-4 h-4"></i>
-          <span>Megaprompt kopieren</span>
-        </button>
-      </div>
-
-      <div class="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl">
-        <pre id="promptText" class="p-6 text-xs md:text-sm font-mono text-slate-300 whitespace-pre-wrap leading-relaxed max-h-[600px] overflow-y-auto">Baue ein vollständiges, hochmodernes und interaktives B2B-ERP-System für zukunftsorientierte KMU als eigenständige, produktionsreife Single-File-Webanwendung (`index.html`).
-
-Die gesamte Anwendung muss zu 100 % in der visuellen Identität, Typografie und Tonalität der Marke **bamou** (https://bamou.at) gehalten sein – getreu dem Markenversprechen: 
-*"Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus."* 
-
-### 1. bamou Brand Identity & Design System
-- Primary: `#4fc17e` (bamou Mint-Grün), Hover: `#41a86b`, Accent Subtle: `rgba(79, 193, 126, 0.08)`
-- Background: `#fcfdfd`, Karten `#ffffff`, Sidebar in Deep Slate `#0f172a`, Borders `#e8ecef`
-- Typography: Google Font `Inter` (`font-sans`), Tabular Figures (`font-mono` für Beträge/IBANs)
-- Original 3-Säulen-Logo (SVG):
-  `<svg viewBox="0 0 552 552"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>`
-
-### 2. Module
-- **Dashboard:** KPIs (Monatsumsatz, Offene Posten, Verrechenbare Stunden, Bankguthaben), Chart.js 6-Monats-Umsatzverlauf in `#4fc17e`, Aktivitäts-Feed.
-- **Faktura / Rechnungen:** Rechnungsliste mit Status-Pills (`Bezahlt`, `Offen`, `Überfällig`), 1-Klick-Statuswechsel, Druck- und PDF-Vorschau (DIN-A4 mit Firmenkopf, UID, 20% USt nach österr. UStG, Bankverbindung) via `window.print()`.
-- **Kunden / CRM:** Tabelle mit UID-Nummer (ATU...), Ansprechpartnern, offenem Saldo und Neuanlage-Modal.
-- **Projekt-Zeiterfassung:** Integriertes Timer-Widget (Start/Stopp), manuelle Schnellerfassung, Projektzuordnung.
-- **BMD-Export:** 1-Klick-Download einer buchungsfertigen CSV-Datei für Steuerberater (BMD NTCS Buchungszeilen).
-- **Persistenz:** Volle `localStorage`-Persistenz aller Änderungen + Vorbefüllung mit realistischen Demodaten.
-
-Gib die vollständige, sofort lauffähige `index.html` ohne Auslassungen in einem einzigen Codeblock aus.</pre>
       </div>
     </section>
 
@@ -497,19 +450,190 @@ Gib die vollständige, sofort lauffähige `index.html` ohne Auslassungen in eine
   </main>
 
   <script>
+    // 5 Full Production Prompts Database
+    const PROMPTS = {
+      bamou: {
+        title: "bamou ERP Single-File One-Shot",
+        filename: "bamou-erp-megaprompt.md",
+        button: "bamou Prompt kopieren",
+        colorClass: "bg-bamou text-slate-950",
+        code: `Baue ein vollständiges, hochmodernes und interaktives B2B-ERP-System für zukunftsorientierte KMU als eigenständige, produktionsreife Single-File-Webanwendung (\`index.html\`).
+
+Die gesamte Anwendung muss zu 100 % in der visuellen Identität, Typografie und Tonalität der Marke **bamou** (https://bamou.at) gehalten sein – getreu dem Markenversprechen: 
+*"Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus."* 
+
+### 1. bamou Brand Identity & Design System
+- Primary: \`#4fc17e\` (bamou Mint-Grün), Hover: \`#41a86b\`, Accent Subtle: \`rgba(79, 193, 126, 0.08)\`
+- Background: \`#fcfdfd\`, Karten \`#ffffff\`, Sidebar in Deep Slate \`#0f172a\`, Borders \`#e8ecef\`
+- Typography: Google Font \`Inter\` (\`font-sans\`), Tabular Figures (\`font-mono\` für Beträge/IBANs)
+- Original 3-Säulen-Logo (SVG):
+  \`<svg viewBox="0 0 552 552"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>\`
+
+### 2. Module
+- **Dashboard:** KPIs (Monatsumsatz, Offene Posten, Verrechenbare Stunden, Bankguthaben), Chart.js 6-Monats-Umsatzverlauf in \`#4fc17e\`, Aktivitäts-Feed.
+- **Faktura / Rechnungen:** Rechnungsliste mit Status-Pills (\`Bezahlt\`, \`Offen\`, \`Überfällig\`), 1-Klick-Statuswechsel, Druck- und PDF-Vorschau (DIN-A4 mit Firmenkopf, UID, 20% USt nach österr. UStG, Bankverbindung) via \`window.print()\`.
+- **Kunden / CRM:** Tabelle mit UID-Nummer (ATU...), Ansprechpartnern, offenem Saldo und Neuanlage-Modal.
+- **Projekt-Zeiterfassung:** Integriertes Timer-Widget (Start/Stopp), manuelle Schnellerfassung, Projektzuordnung.
+- **BMD-Export:** 1-Klick-Download einer buchungsfertigen CSV-Datei für Steuerberater (BMD NTCS Buchungszeilen).
+- **Persistenz:** Volle \`localStorage\`-Persistenz aller Änderungen + Vorbefüllung mit realistischen Demodaten.
+
+Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
+      },
+      lank: {
+        title: "LANK Hardware Webshop Landing Page",
+        filename: "lank-webshop-megaprompt.md",
+        button: "LANK Prompt kopieren",
+        colorClass: "bg-cyan-500 text-black",
+        code: `Erstelle eine vollständige, hochmoderne und interaktive Single-File-E-Commerce-Landingpage (\`index.html\`) für das Consumer-Hardware-Startup **LANK** (https://lanktechnology.com).
+
+### 1. Design & Ästhetik
+- Ästhetik im Stil von Teenage Engineering, Nothing und Apple Industrial Design.
+- Farbpalette: Deep Black \`#070709\`, Carbon Cards \`#111115\`, Border \`#1f1f26\`, Akzentfarbe Neon Cyan \`#00f2fe\` mit sanften Glow-Effekten.
+- Typografie: Plus Jakarta Sans + JetBrains Mono für technische Parameter.
+
+### 2. Interaktive Features
+- **3D-Hardware Hero:** Zentrales, schwebendes 3D-Geräte-Modell mit kinetischem CSS-3D-Float-Effekt (\`preserve-3d\`, \`rotateX/rotateY\`).
+- **Interaktiver Finish-Konfigurator:** Auswahl zwischen „Space Gray“, „Midnight Black“ und „Pure Silver“ – ändert sofort das Erscheinungsbild des 3D-Geräts.
+- **Slide-In Cart Drawer:** Voll funktionsfähiger Warenkorb mit Pre-Order-Kalkulation, Zwischensumme, Gratisversand-Pill und simuliertem Stripe-Checkout.
+- **Hardware-Deep-Dive:** Technische Spezifikationen (Unibody CNC Aluminium, 64-Bit Neural Core, Mag-Dock Ladesystem, Bluetooth 5.4 / Thread).
+- **Snappy Micro-Interactions:** Haptische Toast-Benachrichtigungen bei jeder Aktion.
+
+Gib die vollständige, direkt im Browser lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
+      },
+      phasefit: {
+        title: "PhaseFit FemTech Cycle Intelligence App",
+        filename: "phasefit-app-megaprompt.md",
+        button: "PhaseFit Prompt kopieren",
+        colorClass: "bg-rose-500 text-white",
+        code: `Baue eine vollständige, wunderschöne und interaktive Single-File-Web-App (\`index.html\`) für das österreichische FemTech-Startup **PhaseFit** (https://phasefit.app).
+
+### 1. Konzept & Design
+- **Konzept:** Cycle-Synced Fitness & Nutrition – Trainings-, Ernährungs- und Erholungspläne, die sich dynamisch an die 4 biologischen Zyklusphasen der Frau anpassen.
+- **Design:** Warme, luxuriöse Wellness-Ästhetik (Creme-Hintergrund \`#fbf8f5\`, elegante Karten \`#ffffff\`, weiche Schatten, zarte Serif-Akzente mit Google Font *Playfair Display* und modernem Body *Plus Jakarta Sans*).
+- **Phasen-Farbcodierung:** Menstruell (Rose/Berry), Follikel (Smaragdgrün), Ovulation (Warmes Amber), Luteal (Sanftes Lavendel).
+
+### 2. Kernfunktionen
+- **Interaktiver Zyklus-Wahlschalter:**
+  - Schaltet zwischen den 4 Phasen (Menstruell, Follikel, Ovulation, Luteal) um.
+  - Passt in Echtzeit die gesamte UI an: Workout des Tages, Trainingsintensität, Ernährungstipps und Hormonfokus.
+- **Workout of the Day:**
+  - Ovulation: Peak Strength & schwere Grundübungen (Östrogen-Peak).
+  - Luteal: Reformer Pilates & Core Control (Progesteron-Dominanz).
+  - Menstruell: Sanfte Mobilität & Stretching.
+  - Follikel: Dynamisches HIIT & Kraftaufbau.
+- **Ernährung & Seed Cycling:**
+  - Anzeige spezifischer Mikronährstoffe (Eisen, Zink, B-Vitamine) und passender Lebensmittel für die jeweilige Phase.
+- **Symptom- & Mood-Logger:**
+  - One-Click-Buttons zum schnellen Protokollieren von Energielevel, Fokus und Stimmung mit sofortigem Toast-Feedback.
+
+Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
+      },
+      vamont: {
+        title: "VAMONT 3D Luxury Walltrainer Landing Page",
+        filename: "vamont-3d-megaprompt.md",
+        button: "VAMONT Prompt kopieren",
+        colorClass: "bg-amber-500 text-black",
+        code: `Erstelle eine vollständige, luxuriöse Single-File-Landingpage (\`index.html\`) für den smarten Wand-Krafttrainer **VAMONT** (https://vamont.fit), inklusive eines **voll interaktiven 3D-Produktmodells via Three.js**.
+
+### 1. 3D-Studio (Three.js + OrbitControls via CDN)
+- **3D-Szene:** Dunkles Studio-Setting mit Spotlights, warmen Reflexionen und OrbitControls (360° drehbar, zoombar, Neigungswinkel begrenzt).
+- **Prozedurales 3D-Modell des Walltrainers:**
+  - Edles Holz-Wandpaneel (Hintergrund-Trägerplatte).
+  - Matt eloxierter Aluminium-Rahmen.
+  - Zentraler, goldener Widerstandsregler mit digitaler Anzeige.
+  - Verstellbare Seilzug-Arme mit Edelstahlseilen und ergonomischen Handgriffen.
+- **Interaktiver Material- & Holz-Konfigurator:**
+  - Buttons für „Amerikanischer Nussbaum“, „Eiche Natur“ und „Carbon Black“ ändern die 3D-Materialfarbe des Holzpaneels in Echtzeit.
+- **Kabelzug-Animationssimulation:**
+  - Ein Button *"Kabelzug testen"* animiert die Griffe und Seile in einer dynamischen Zugbewegung mit sanfter Rückführung.
+
+### 2. Luxus-UI & B2B-Positionierung
+- Ansprache für Penthouse-Besitzer, Architekten, Boutique-Hotels und Physiotherapie-Studios.
+- Typografie: Stilvoller Serif-Font (*Cormorant Garamond*) für Headlines, moderner Sans-Font (*Plus Jakarta Sans*) für Fließtext.
+- Modales B2B-Anfrageformular mit Einsatzbereich-Auswahl (Penthouse, Hotel-Chalet, Physio).
+- Preisübersicht und technische Eckdaten (0,3 m² Wandfläche, 1,5 bis 75 kg stufenloser Widerstand).
+
+Gib die vollständige, direkt im Browser lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
+      },
+      playground: {
+        title: "Playground Instruments 3D Web Audio Synthesizer",
+        filename: "playground-instruments-3d-megaprompt.md",
+        button: "Playground Prompt kopieren",
+        colorClass: "bg-orange-500 text-black",
+        code: `Erstelle eine spektakuläre, vollständige Single-File-Website (\`index.html\`) für das Musik-Hardware-Startup **Playground Instruments** (https://playground-instruments.com) aus Graz. Die Anwendung kombiniert ein **interaktives 3D-Modell** mit einer **echten, im Browser spielbaren Synthesizer-Audio-Engine**.
+
+### 1. Konzept des Instruments
+- Weltweit erste Tastatur, die eine mechanische QWERTY-Computertastatur (zum Schreiben & Coden) nahtlos mit einem 25-Tasten-Musiksynthesizer und MIDI-Controller vereint.
+- Entwickelt von Stefan Baumgartner, Dominik Sabathy und Aron Petritz im Unicorn Innovation Hub Graz.
+
+### 2. Live Web Audio API Synthesizer
+- **Echte Klangsynthese:** Kein vorgefertigtes Audio-Sample, sondern echte Oszillatoren (Sawtooth, Sine, Square), Low-Pass-Filter und dynamische ADSR-Hüllkurven.
+- **Sound-Presets:** „80s Synthwave Lead“, „Lo-Fi Dream Pluck“, „Cyber Chiptune Bass“.
+- **Spielbar über zwei Wege:**
+  1. Klickbare Klaviertasten auf dem Bildschirm (inkl. Halbtöne C, C#, D, D# ...).
+  2. Physische Tastatur-Shortcuts (Tasten A, W, S, E, D, F, T, G, Z, H, U, J, K spielen Töne).
+
+### 3. Three.js 3D-Modell des Hybrid-Keyboards
+- Prozedurales 3D-Gehäuse mit oberen mechanischen Keycaps, unterer 25-Tasten-Klaviatur und 4 Drehreglern (Rotary Knobs).
+- OrbitControls (Drehen, Neigen, Zoomen).
+- Visuelles Feedback: Bei jedem gespielten Ton leuchtet das 3D-Chassis subtil im Takt auf.
+
+### 4. Story & Hardware-Spezifikationen
+- Hintergrund zum Rising Star Award der Gründungsgarage Graz.
+- Spezifikationen: USB-C MIDI + HID Kombi-Interface, Cherry MX Switches, Aluminium-Body.
+
+Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
+      }
+    };
+
+    let currentPromptKey = 'bamou';
+
+    function selectPrompt(key) {
+      currentPromptKey = key;
+      const p = PROMPTS[key];
+      if (!p) return;
+
+      document.querySelectorAll('.pnav-btn').forEach(btn => {
+        btn.className = "pnav-btn px-4 py-2 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2";
+      });
+
+      const activeBtn = document.getElementById('pnav-' + key);
+      if (activeBtn) {
+        activeBtn.className = `pnav-btn px-4 py-2 rounded-xl text-xs font-bold transition-all ${p.colorClass} flex items-center gap-2 shadow-sm`;
+      }
+
+      document.getElementById('promptFilename').innerText = p.filename;
+      document.getElementById('copyBtnLabel').innerText = p.button;
+      document.getElementById('activePromptCode').innerText = p.code;
+    }
+
+    function selectPromptAndSwitch(key) {
+      switchTab('prompt');
+      selectPrompt(key);
+      copyCurrentPrompt();
+    }
+
+    function copyCurrentPrompt() {
+      const p = PROMPTS[currentPromptKey];
+      if (!p) return;
+      navigator.clipboard.writeText(p.code).then(() => {
+        showToast(`⚡ ${p.title} erfolgreich kopiert!`);
+      });
+    }
+
     function switchTab(tabId) {
       document.querySelectorAll('section[id^="tab-"]').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('text-white', 'bg-slate-800', 'shadow-sm');
-        btn.classList.add('text-slate-400');
+        btn.classList.remove('text-white', 'bg-slate-800', 'shadow-sm', 'font-bold');
+        btn.classList.add('text-slate-400', 'font-medium');
       });
 
       const activeTab = document.getElementById('tab-' + tabId);
       const activeBtn = document.getElementById('tabBtn-' + tabId);
       if (activeTab && activeBtn) {
         activeTab.classList.remove('hidden');
-        activeBtn.classList.remove('text-slate-400');
-        activeBtn.classList.add('text-white', 'bg-slate-800', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-400', 'font-medium');
+        activeBtn.classList.add('text-white', 'bg-slate-800', 'shadow-sm', 'font-bold');
       }
       lucide.createIcons();
     }
@@ -527,18 +651,8 @@ Gib die vollständige, sofort lauffähige `index.html` ohne Auslassungen in eine
       }, 2500);
     }
 
-    function copyText(text, msg) {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(msg || 'Kopiert!');
-      });
-    }
-
-    function copyPromptPro() {
-      const prompt = document.getElementById('promptText').innerText;
-      copyText(prompt, '⚡ Prompt Pro für das bamou ERP kopiert!');
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
+      selectPrompt('bamou');
       lucide.createIcons();
     });
   </script>
