@@ -30,27 +30,19 @@
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-  </style>
 </head>
 <body class="min-h-full flex flex-col font-sans selection:bg-bamou selection:text-slate-950">
 
-  <!-- Toast Notification Container -->
+  <!-- Toast Container -->
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Top Navigation Header -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-30 px-6 py-4">
+  <!-- Top Header -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30 px-6 py-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
       <!-- Brand Logo & Title -->
       <div class="flex items-center gap-4">
         <div class="p-2 rounded-xl bg-slate-800 border border-slate-700/60 shadow-inner flex items-center justify-center">
-          <!-- Official bamou 3-pill logo -->
           <svg class="h-6 w-6" viewBox="0 0 552 552" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
             <rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
@@ -76,22 +68,22 @@
           <i data-lucide="sparkles" class="w-4 h-4 text-bamou"></i>
           <span>Prompt Pro</span>
         </button>
-        <button onclick="switchTab('htmlcode')" id="tabBtn-htmlcode" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
-          <i data-lucide="code" class="w-4 h-4 text-bamou"></i>
-          <span>HTML Code & Preview</span>
+        <button onclick="switchTab('apps')" id="tabBtn-apps" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-bamou"></i>
+          <span>Live Apps & 3D (5)</span>
         </button>
       </div>
 
-      <!-- Quick Action: Copy Prompt Pro -->
-      <button onclick="copyPromptPro()" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-semibold px-4 py-2 rounded-xl text-sm transition-all shadow-lg shadow-bamou/20 flex items-center gap-2 active:scale-95">
-        <i data-lucide="copy" class="w-4 h-4"></i>
-        <span>Prompt Pro kopieren</span>
-      </button>
+      <!-- Quick Action -->
+      <a href="https://github.com/servas-ai/aws-batch1-gruppe1-showcase" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-all border border-slate-700 flex items-center gap-2">
+        <i data-lucide="github" class="w-4 h-4"></i>
+        <span>servas-ai Repo ↗</span>
+      </a>
 
     </div>
   </header>
 
-  <!-- Main Content Area -->
+  <!-- Main Content -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-6">
 
     <!-- ========================================== -->
@@ -102,96 +94,202 @@
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span>Startups in Gruppe 1</span>
+            <span>Startups in Gruppe 1 (aws First Incubator)</span>
             <span class="text-xs px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 border border-slate-700">7 Teams</span>
           </h2>
-          <p class="text-sm text-slate-400">Übersicht aller Gründerteams aus eurer Gruppe mit Websites, Domains und Themenschwerpunkten.</p>
+          <p class="text-sm text-slate-400">Vollständig recherchierte Gründer, Websites, Domains und Themenschwerpunkte.</p>
         </div>
       </div>
 
-      <!-- Startup Grid -->
+      <!-- Startup Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
         <!-- 1. bamou -->
-        <div class="rounded-2xl bg-slate-900 border border-bamou/30 p-5 flex flex-col justify-between hover:border-bamou transition-all shadow-md hover:shadow-bamou/10 relative overflow-hidden group">
-          <div class="absolute top-0 right-0 w-24 h-24 bg-bamou/5 rounded-full blur-2xl group-hover:bg-bamou/10 transition-all pointer-events-none"></div>
+        <div class="rounded-2xl bg-slate-900 border border-bamou/40 p-5 flex flex-col justify-between hover:border-bamou transition-all shadow-md">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-bamou/10 border border-bamou/30 flex items-center justify-center p-2">
-                  <svg class="h-full w-auto" viewBox="0 0 552 552" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
-                    <rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
-                    <rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
-                  </svg>
+                  <svg class="h-full w-auto" viewBox="0 0 552 552" fill="none"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>
                 </div>
                 <div>
                   <h3 class="font-bold text-white text-lg">bamou</h3>
                   <span class="text-xs font-medium text-bamou">KMU-Software / B2B</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-bamou/20 text-bamou border border-bamou/30">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-bamou/20 text-bamou border border-bamou/30">Gruppe 1</span>
             </div>
             
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              „Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus.“ Modulares Cloud-ERP für österreichische KMU.
+            <p class="text-xs text-slate-300 mb-4">
+              „Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus.“ Modulares Cloud-ERP für österreichische Betriebe.
             </p>
 
             <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
               <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://bamou.at" target="_blank" class="text-bamou hover:underline font-mono">bamou.at ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Kategorie:</span> <span class="text-slate-200">ERP & KMU-Management</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Fokus:</span> <span class="text-slate-200">Faktura, CRM, Zeiterfassung</span></div>
               <div class="flex justify-between"><span class="text-slate-500">Coach:</span> <span class="text-slate-200">THX (Marlene & Thomas)</span></div>
             </div>
           </div>
 
           <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://bamou.at" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Website öffnen
+            <a href="./apps/bamou-erp.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-bamou hover:bg-bamou-hover text-slate-950 text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> ERP Suite öffnen
             </a>
-            <button onclick="copyText('https://bamou.at', 'bamou.at Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors">
+            <button onclick="copyText('https://bamou.at', 'bamou.at kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i>
             </button>
           </div>
         </div>
 
-        <!-- 2. Fintaro (Martin & Team) -->
+        <!-- 2. LANK -->
         <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold">
-                  F
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
+                  L
                 </div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">Fintaro</h3>
-                  <span class="text-xs font-medium text-indigo-400">KMU-Software / B2B</span>
+                  <h3 class="font-bold text-white text-lg">LANK Technology</h3>
+                  <span class="text-xs font-medium text-cyan-400">Consumer & Alpine Hardware / B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Dein Team</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
             </div>
             
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              KI-gestützte Vorbuchhaltung & deterministische Multi-Channel-Belegbeschaffung mit Runbooks und BMD/DATEV-Export.
+            <p class="text-xs text-slate-300 mb-4">
+              „Make it right, keep it light!“ High-Tech Carbon-Hardware für den Bergsport (u.a. LT SNOW lite Lawinenschaufel).
             </p>
 
             <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://fintaro.ai" target="_blank" class="text-indigo-400 hover:underline font-mono">fintaro.ai ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Team:</span> <span class="text-slate-200">Martin, Larissa, Jan, David</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Coach:</span> <span class="text-slate-200">THX (Marlene & Thomas)</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://lanktechnology.com" target="_blank" class="text-cyan-400 hover:underline font-mono">lanktechnology.com ↗</a></div>
+              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Leo Aschberger & Nikolaus Kampelmühler</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Traun (OÖ) · FH OÖ Faserverbund</span></div>
             </div>
           </div>
 
           <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://fintaro.ai" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Website öffnen
+            <a href="./apps/lank-webshop.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-cyan-400"></i> Webshop Prototyp
             </a>
-            <button onclick="copyText('https://fintaro.ai', 'fintaro.ai Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors">
+            <button onclick="copyText('https://lanktechnology.com', 'lanktechnology.com kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i>
             </button>
           </div>
         </div>
 
-        <!-- 3. codeXX.health -->
+        <!-- 3. PhaseFit -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+          <div>
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold">
+                  PF
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-lg">PhaseFit</h3>
+                  <span class="text-xs font-medium text-rose-400">FemTech / B2C</span>
+                </div>
+              </div>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+            </div>
+            
+            <p class="text-xs text-slate-300 mb-4">
+              Cycle Intelligence: Zyklusbasiertes Fitnesstraining, Workouts & Ernährung abgestimmt auf die 4 weiblichen Hormonphasen.
+            </p>
+
+            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://phasefit.app" target="_blank" class="text-rose-400 hover:underline font-mono">phasefit.app ↗</a></div>
+              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Michelle Köberl, Florian Tesarek, Elias Stahl</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Purkersdorf (NÖ)</span></div>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-2 border-t border-slate-800">
+            <a href="./apps/phasefit-app.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="smartphone" class="w-3.5 h-3.5 text-rose-400"></i> PWA App öffnen
+            </a>
+            <button onclick="copyText('https://phasefit.app', 'phasefit.app kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. VAMONT Walltrainer -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+          <div>
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
+                  V
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-lg">VAMONT Walltrainer</h3>
+                  <span class="text-xs font-medium text-amber-400">Smart Fitness / B2B & B2C</span>
+                </div>
+              </div>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+            </div>
+            
+            <p class="text-xs text-slate-300 mb-4">
+              „Smart Strength. Everyday.“ Minimalistischer, wandmontierter Krafttrainer mit über 50 Übungen auf 0,3 m² Wandfläche.
+            </p>
+
+            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://vamont.fit" target="_blank" class="text-amber-400 hover:underline font-mono">vamont.fit ↗</a></div>
+              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Daniel Altenhofer & Thomas Pöchtrager</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Altenfelden (OÖ) · tech2b</span></div>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-2 border-t border-slate-800">
+            <a href="./apps/vamont-3d-landing.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="box" class="w-3.5 h-3.5 text-amber-400"></i> 3D Studio öffnen
+            </a>
+            <button onclick="copyText('https://vamont.fit', 'vamont.fit kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Playground Instruments -->
+        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+          <div>
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold">
+                  PI
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-lg">Playground Instruments</h3>
+                  <span class="text-xs font-medium text-orange-400">Music Hardware / B2C</span>
+                </div>
+              </div>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+            </div>
+            
+            <p class="text-xs text-slate-300 mb-4">
+              (ehem. Organic I) Hybrid-Tastatur: Kombination aus mechanischer QWERTY-Tastatur & 25-Tasten-Musiksynthesizer.
+            </p>
+
+            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://playground-instruments.com" target="_blank" class="text-orange-400 hover:underline font-mono">playground-instruments.com ↗</a></div>
+              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Stefan Baumgartner, D. Sabathy, A. Petritz</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Graz · Unicorn Hub · Rising Star</span></div>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-2 border-t border-slate-800">
+            <a href="./apps/playground-instruments-3d.html" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="music" class="w-3.5 h-3.5 text-orange-400"></i> 3D Synth testen
+            </a>
+            <button onclick="copyText('https://playground-instruments.com', 'Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. codeXX.health -->
         <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
           <div>
             <div class="flex items-start justify-between mb-3">
@@ -204,168 +302,63 @@
                   <span class="text-xs font-medium text-pink-400">FemTech / B2C</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
             </div>
             
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              Cycle Intelligence: KI-gestützte Hormon- & Zyklusplattform mit Privacy-First-Architektur (On-Device AI).
+            <p class="text-xs text-slate-300 mb-4">
+              Privacy-first cycle intelligence: KI-Hormoncoach mit 100 % On-Device AI zur Linderung von Menstruationsbeschwerden.
             </p>
 
             <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://www.codexx.health" target="_blank" class="text-pink-400 hover:underline font-mono">codexx.health ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Miriam Roček, Roman Sturzeis</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://codexx.health" target="_blank" class="text-pink-400 hover:underline font-mono">codexx.health ↗</a></div>
+              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Miriam Roček & Roman Sturzeis</span></div>
               <div class="flex justify-between"><span class="text-slate-500">Inkubator:</span> <span class="text-slate-200">INiTS SCALEup / aws First</span></div>
             </div>
           </div>
 
           <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://www.codexx.health" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
+            <a href="https://codexx.health" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
               <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Website öffnen
             </a>
-            <button onclick="copyText('https://www.codexx.health', 'codexx.health Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors">
+            <button onclick="copyText('https://codexx.health', 'codexx.health kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i>
             </button>
           </div>
         </div>
 
-        <!-- 4. PhaseFit -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
+        <!-- 7. Fintaro (Martin & Team) -->
+        <div class="rounded-2xl bg-slate-900 border border-indigo-500/40 p-5 flex flex-col justify-between hover:border-indigo-500 transition-all shadow-md">
           <div>
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold">
-                  PF
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold">
+                  F
                 </div>
                 <div>
-                  <h3 class="font-bold text-white text-lg">PhaseFit</h3>
-                  <span class="text-xs font-medium text-purple-400">FemTech / B2C</span>
+                  <h3 class="font-bold text-white text-lg">Fintaro</h3>
+                  <span class="text-xs font-medium text-indigo-400">KMU-Software / B2B</span>
                 </div>
               </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Dein Team</span>
             </div>
             
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              Zyklusbasiertes Fitnesstraining & Regeneration: Trainings- und Ernährungspläne synchronisiert mit hormonellen Phasen.
+            <p class="text-xs text-slate-300 mb-4">
+              „Fintaro findet, was fehlt.“ KI-gestützte Vorbuchhaltung & deterministische Multi-Channel-Belegbeschaffung mit Runbooks.
             </p>
 
             <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://phasefit.app" target="_blank" class="text-purple-400 hover:underline font-mono">phasefit.app ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Fokus:</span> <span class="text-slate-200">Female Performance & Health</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Coach:</span> <span class="text-slate-200">THX (Marlene & Thomas)</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://fintaro.ai" target="_blank" class="text-indigo-400 hover:underline font-mono">fintaro.ai ↗</a></div>
+              <div class="flex justify-between"><span class="text-slate-500">Team:</span> <span class="text-slate-200">Larissa Haubner, Jan, David, Martin</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Standort:</span> <span class="text-slate-200">Ernsthofen · Fintaro AI FlexCo</span></div>
             </div>
           </div>
 
           <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://phasefit.app" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Website öffnen
+            <a href="https://fintaro.ai" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> fintaro.ai öffnen
             </a>
-            <button onclick="copyText('https://phasefit.app', 'phasefit.app Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors">
+            <button onclick="copyText('https://fintaro.ai', 'fintaro.ai kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- 5. VAMONT Walltrainer -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
-          <div>
-            <div class="flex items-start justify-between mb-3">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
-                  V
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg">VAMONT Walltrainer</h3>
-                  <span class="text-xs font-medium text-amber-400">Consumer Hardware / B2B & B2C</span>
-                </div>
-              </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
-            </div>
-            
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              Smarter Wand-Krafttrainer auf minimaler Fläche mit über 50 Übungen für Home Gym, Physiotherapie und Hotel-Chalets.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Website:</span> <a href="https://vamont.fit" target="_blank" class="text-amber-400 hover:underline font-mono">vamont.fit ↗</a></div>
-              <div class="flex justify-between"><span class="text-slate-500">Produkt:</span> <span class="text-slate-200">Smarter Fitness-Walltrainer</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Zielgruppe:</span> <span class="text-slate-200">Home, Physio, Boutique Hotels</span></div>
-            </div>
-          </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <a href="https://vamont.fit" target="_blank" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Website öffnen
-            </a>
-            <button onclick="copyText('https://vamont.fit', 'vamont.fit Domain kopiert!')" class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- 6. Playground Instruments -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
-          <div>
-            <div class="flex items-start justify-between mb-3">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
-                  PI
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg">Playground Instruments</h3>
-                  <span class="text-xs font-medium text-cyan-400">Consumer Hardware / B2C</span>
-                </div>
-              </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
-            </div>
-            
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              (ehemals Organic I) Hardware-Innovation an der Schnittstelle von Keyboard und Computertastatur für Musikproduzenten.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Gründer:</span> <span class="text-slate-200">Stefan Baumgartner, D. Sabathy, A. Petritz</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Hub:</span> <span class="text-slate-200">Unicorn / Gründungsgarage Graz</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Award:</span> <span class="text-slate-200">Rising Star Award</span></div>
-            </div>
-          </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <button onclick="copyText('Playground Instruments (Graz): Stefan Baumgartner, Dominik Sabathy, Aron Petritz', 'Info kopiert!')" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="info" class="w-3.5 h-3.5"></i> Team Info kopieren
-            </button>
-          </div>
-        </div>
-
-        <!-- 7. LANK -->
-        <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md">
-          <div>
-            <div class="flex items-start justify-between mb-3">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">
-                  L
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg">LANK</h3>
-                  <span class="text-xs font-medium text-emerald-400">Consumer Hardware / B2C</span>
-                </div>
-              </div>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Gruppe 1</span>
-            </div>
-            
-            <p class="text-xs text-slate-300 mb-4 line-clamp-2">
-              Consumer Hardware-Projekt aus Call 1. Begleitet durch aws Betreuer Martin & THX Coaching.
-            </p>
-
-            <div class="space-y-1.5 text-xs text-slate-400 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-500">Thema:</span> <span class="text-slate-200">Consumer Hardware B2C</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Betreuer:</span> <span class="text-slate-200">Martin (aws)</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Coach:</span> <span class="text-slate-200">THX (Marlene & Thomas)</span></div>
-            </div>
-          </div>
-
-          <div class="flex gap-2 pt-2 border-t border-slate-800">
-            <button onclick="copyText('LANK (Consumer Hardware B2C) - aws First Incubator Batch 1', 'Info kopiert!')" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium text-center transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="info" class="w-3.5 h-3.5"></i> Team Info kopieren
             </button>
           </div>
         </div>
@@ -374,17 +367,16 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- TAB 2: PROMPT PRO (BAMOU ERP ONE-SHOT)     -->
+    <!-- TAB 2: PROMPT PRO (BAMOU ERP)              -->
     <!-- ========================================== -->
     <section id="tab-prompt" class="space-y-6 hidden">
-      
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
             <span>Prompt Pro: bamou ERP Single-File One-Shot</span>
             <span class="text-xs px-2 py-0.5 rounded-md bg-bamou/10 text-bamou border border-bamou/20">Production-Grade</span>
           </h2>
-          <p class="text-sm text-slate-400">Dieser Prompt instruiert ChatGPT, Claude oder Antigravity, das komplette ERP-System in einer einzigen Datei zu bauen.</p>
+          <p class="text-sm text-slate-400">Instruiert Claude 3.7, GPT-4o/6 oder Antigravity, das vollständige ERP-System in einer einzigen HTML-Datei nachzubauen.</p>
         </div>
 
         <button onclick="copyPromptPro()" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all shadow-md shadow-bamou/20 flex items-center gap-2 active:scale-95">
@@ -393,172 +385,118 @@
         </button>
       </div>
 
-      <!-- Prompt Container -->
-      <div class="relative rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl">
-        <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
-          <div class="flex items-center gap-2 font-mono">
-            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
-            <span class="ml-2 text-slate-300">bamou-erp-oneshot-prompt.md</span>
-          </div>
-          <span class="font-mono text-slate-500">Markdown Format</span>
-        </div>
-
-        <pre id="promptText" class="p-6 text-xs md:text-sm font-mono text-slate-300 whitespace-pre-wrap overflow-x-auto leading-relaxed max-h-[600px] overflow-y-auto">Baue ein vollständiges, hochmodernes und interaktives B2B-ERP-System für zukunftsorientierte KMU als eigenständige, produktionsreife Single-File-Webanwendung (`index.html`).
+      <div class="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl">
+        <pre id="promptText" class="p-6 text-xs md:text-sm font-mono text-slate-300 whitespace-pre-wrap leading-relaxed max-h-[600px] overflow-y-auto">Baue ein vollständiges, hochmodernes und interaktives B2B-ERP-System für zukunftsorientierte KMU als eigenständige, produktionsreife Single-File-Webanwendung (`index.html`).
 
 Die gesamte Anwendung muss zu 100 % in der visuellen Identität, Typografie und Tonalität der Marke **bamou** (https://bamou.at) gehalten sein – getreu dem Markenversprechen: 
 *"Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus."* 
-Es soll sich nicht wie alte, sperrige Unternehmenssoftware anfühlen, sondern wie ein hyper-modernes Produkt der Klasse von Linear, Raycast oder Vercel – maßgeschneidert für moderne europäische Betriebe.
-
----
 
 ### 1. bamou Brand Identity & Design System
+- Primary: `#4fc17e` (bamou Mint-Grün), Hover: `#41a86b`, Accent Subtle: `rgba(79, 193, 126, 0.08)`
+- Background: `#fcfdfd`, Karten `#ffffff`, Sidebar in Deep Slate `#0f172a`, Borders `#e8ecef`
+- Typography: Google Font `Inter` (`font-sans`), Tabular Figures (`font-mono` für Beträge/IBANs)
+- Original 3-Säulen-Logo (SVG):
+  `<svg viewBox="0 0 552 552"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>`
 
-- **Brand-Farben & Design-Tokens:**
-  - `primary`: `#4fc17e` (das charakteristische bamou-Mint-Grün)
-  - `primary-hover`: `#41a86b`
-  - `primary-subtle`: `rgba(79, 193, 126, 0.08)` (für zarte Hintergründe und aktive States)
-  - `surface-light`: `#fcfdfd` (Hintergrund), `#ffffff` (Karten)
-  - `surface-dark`: `#0f172a` (Sidebar/Header)
-  - `border`: `#e8ecef` (ultra-feine, elegante Rahmen)
-  - `text-main`: `#090d16` (tiefes, modernes Fast-Schwarz)
-  - `text-muted`: `#64748b` (zurückhaltendes Slate)
-- **Typografie:**
-  - Google Font `Inter` (`font-sans`), mit knackigem `tracking-tight` auf allen Headlines und Zahlen.
-  - Großzügiges Whitespace, klare Hierarchien, tabellarische Ziffern (`font-mono` für Beträge/IBANs).
-- **Das originale 3-Säulen-Logo von bamou:**
-  Bette dieses SVG direkt in die Sidebar und das UI ein:
-  ```html
-  <svg class="h-8 w-auto" viewBox="0 0 552 552" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
-    <rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
-    <rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
-  </svg>
-  ```
-- **Microcopy & Voice:**
-  - Reduziert, direkt, modern. Kein Beamtendeutsch, keine verstaubten ERP-Menüs.
-  - Buttons heißen z. B. *"Neue Rechnung"*, *"Kunde hinzufügen"*, *"Zeit stoppen"*, *"In Rechnung wandeln"*.
-  - Toasts sind snappy und haptisch inspiriert (z. B. *"Gespeichert."*, *"Rechnung RE-2026-004 als bezahlt markiert"*).
-
----
-
-### 2. Technische Architektur (Zero-Setup)
-
-- **Single-File-App:** Alles in einer einzigen `index.html` (HTML + CSS via Tailwind CDN + JS).
-- **Bibliotheken via CDN:**
-  - Tailwind CSS: `https://cdn.tailwindcss.com`
-  - Lucide Icons: `https://unpkg.com/lucide@latest`
-  - Chart.js: `https://cdn.jsdelivr.net/npm/chart.js`
-- **State Management & Persistenz:**
-  - Reines, modulares Vanilla-JavaScript.
-  - **Volle `localStorage`-Persistenz**: Jeder erstellte Kunde, jede Rechnung, jede gestoppte Zeit wird gespeichert und überlebt einen Page-Reload.
-  - **Musterdaten:** Falls `localStorage` leer ist, initialisiere sofort ein Set realistischer KMU-Demodaten (4 Kunden mit UID, 5 Rechnungen mit Status, 3 Projekte mit Zeiten und KPIs).
-
----
-
-### 3. Die Module des bamou ERP
-
-#### A. Command Palette (`CMD + K` oder `STRG + K`)
-- Ein modernes Spotlight-/Raycast-Suchmodal öffnet sich per Shortcut oder Klick in der Navbar.
-- Schnelle Suche nach Kunden, Rechnungsnummern oder Sofort-Aktionen (*"Neue Rechnung schreiben"*, *"Zeiterfassung starten"*, *"BMD-Export"*).
-
-#### B. Dashboard / Live-Cockpit
-- **Hero-Stat-Cards:**
-  - **Umsatz Monat:** Betrag mit Trend-Pill (`+14.2%`) und dezentem `#4fc17e`-Akzentbalken.
-  - **Offene Posten:** Ausstehender Gesamtbetrag + Anzahl überfälliger Rechnungen.
-  - **Aktive Projekte & Zeiten:** Gesamtstunden diesen Monat + Quote verrechenbarer Stunden.
-  - **Liquidität / Cashflow:** Kontostand-Simulation.
-- **Interaktives Umsatz-Chart:** 6-Monats-Verlauf als geschmeidiges Balken- oder Liniendiagramm in `#4fc17e`.
-- **Aktivitäts-Timeline:** Neueste Buchungen und Statuswechsel in chronologischer Reihe.
-
-#### C. CRM & Kundenverwaltung
-- Durchsuchbare Kundenliste (Firma, Ansprechpartner, Mail, Telefon, UID-Nummer `ATU...`, Status).
-- **Kunden-Dossier (Modal/Drawer):** Zeigt sofort alle zugeordneten Rechnungen, Angebote und offenen Salden dieses Kunden.
-- Formular zur schnellen Neuanlage mit automatischer Validierung der UID-Nummer.
-
-#### D. Angebote & Aufträge (Sales Pipeline)
-- Kanban- oder Listen-Ansicht nach Status: `Entwurf` ➔ `Versendet` ➔ `Angenommen` ➔ `Abgerechnet`.
-- **Interaktiver Angebots-Editor:**
-  - Kunde wählen, dynamische Positionen hinzufügen (Titel, Menge, Einheit, Einzelpreis, 20% / 10% / 0% USt).
-  - Automatische Live-Berechnung von Netto, USt und Brutto.
-  - **1-Klick-Action:** *"In Rechnung wandeln"* – erzeugt aus dem angenommenen Angebot direkt eine fertige Ausgangsrechnung.
-
-#### E. Faktura & Rechnungswesen (Core Engine)
-- Rechnungsübersicht mit visuellen Status-Pills: `Bezahlt` (bamou-Grün), `Offen` (Gelb/Amber), `Überfällig` (Rot).
-- Status-Toggle per Klick: *"Als bezahlt markieren"* bucht sofort um und aktualisiert das Dashboard.
-- **Druck- & PDF-Vorschau:**
-  - Modern gestaltetes, druckreifes DIN-A4-Dokument im bamou-Design.
-  - Mit Firmenkopf, QR-Zahlungscode-Simulation, Rechnungsnummer, Leistungszeitraum, USt-Aufschlüsselung und Bankverbindung.
-  - Druckbar direkt via `window.print()`.
-- **Steuerberater / BMD-Export:** Button erzeugt eine buchungsfertige CSV-Datei für Steuerberater (Format abgestimmt auf gängige Schnittstellen wie BMD NTCS / DATEV).
-
-#### F. Moderne Zeiterfassung
-- **Floating Timer in der Leiste:** Start-, Pause- und Stop-Button mit Projekt-Zuweisung.
-- Manuelle Zeiterfassung mit Tagging (`Verrechenbar` / `Nicht verrechenbar`).
-- Projekt-Fortschrittsbalken (Ist-Stunden vs. vereinbartes Budget).
-
-#### G. Einstellungen & Mandant
-- Konfiguration der eigenen Stammdaten: Firmenname, Rechtsform (GmbH, FlexCo, e.U.), UID, Firmenbuch, Bankdaten (IBAN, BIC), Standard-Zahlungsziel.
-- *"Demo-Daten zurücksetzen"*-Funktion für Testzwecke.
-
----
-
-### 4. UI/UX-Qualität & Polish
-1. **Kein Fake-UI:** Jeder Button, jedes Dropdown und jede Status-Pille muss interaktiv sein.
-2. **Backdrop-Blur-Modale:** Elegante Überlagerungen (`backdrop-blur-sm bg-black/40`), die per ESC oder Klick außerhalb schließen.
-3. **Responsive:** Perfekt bedienbar am Desktop sowie mobil.
+### 2. Module
+- **Dashboard:** KPIs (Monatsumsatz, Offene Posten, Verrechenbare Stunden, Bankguthaben), Chart.js 6-Monats-Umsatzverlauf in `#4fc17e`, Aktivitäts-Feed.
+- **Faktura / Rechnungen:** Rechnungsliste mit Status-Pills (`Bezahlt`, `Offen`, `Überfällig`), 1-Klick-Statuswechsel, Druck- und PDF-Vorschau (DIN-A4 mit Firmenkopf, UID, 20% USt nach österr. UStG, Bankverbindung) via `window.print()`.
+- **Kunden / CRM:** Tabelle mit UID-Nummer (ATU...), Ansprechpartnern, offenem Saldo und Neuanlage-Modal.
+- **Projekt-Zeiterfassung:** Integriertes Timer-Widget (Start/Stopp), manuelle Schnellerfassung, Projektzuordnung.
+- **BMD-Export:** 1-Klick-Download einer buchungsfertigen CSV-Datei für Steuerberater (BMD NTCS Buchungszeilen).
+- **Persistenz:** Volle `localStorage`-Persistenz aller Änderungen + Vorbefüllung mit realistischen Demodaten.
 
 Gib die vollständige, sofort lauffähige `index.html` ohne Auslassungen in einem einzigen Codeblock aus.</pre>
       </div>
-
     </section>
 
     <!-- ========================================== -->
-    <!-- TAB 3: HTML CODE & LIVE PREVIEW            -->
+    <!-- TAB 3: LIVE APPS & 3D MODELS               -->
     <!-- ========================================== -->
-    <section id="tab-htmlcode" class="space-y-6 hidden">
-      
+    <section id="tab-apps" class="space-y-6 hidden">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span>Komplettes bamou ERP (Single-File)</span>
-            <span class="text-xs px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Lauffähig</span>
+            <span>Alle 5 interaktiven Prototypen & 3D-Apps</span>
+            <span class="text-xs px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Single-File</span>
           </h2>
-          <p class="text-sm text-slate-400">Direkt generierter, lauffähiger HTML-Code des ERP-Systems zum Kopieren oder interaktiven Ausprobieren.</p>
+          <p class="text-sm text-slate-400">Direkt klick- und testbare Single-File Web-Apps im Browser.</p>
         </div>
+      </div>
 
-        <div class="flex items-center gap-3">
-          <button onclick="copyGeneratedHtml()" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all shadow-md shadow-bamou/20 flex items-center gap-2 active:scale-95">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-            <span>HTML Code kopieren</span>
-          </button>
-          <a href="./bamou-erp-app.html" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white font-medium px-4 py-2 rounded-xl text-sm transition-all border border-slate-700 flex items-center gap-2">
-            <i data-lucide="external-link" class="w-4 h-4"></i>
-            <span>In neuem Tab öffnen</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-bamou"></span>
+            <div>
+              <h3 class="font-bold text-white text-sm">bamou ERP Suite</h3>
+              <p class="text-xs text-slate-400">Rechnungen, CRM, Zeiterfassung & BMD-Export</p>
+            </div>
+          </div>
+          <a href="./apps/bamou-erp.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-bamou text-slate-950 font-bold text-xs hover:bg-bamou-hover transition-colors">
+            Öffnen ↗
           </a>
         </div>
-      </div>
 
-      <!-- Live Preview Iframe Container -->
-      <div class="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden shadow-2xl">
-        <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-          <div class="flex items-center gap-2 text-xs font-mono text-slate-400">
-            <span class="w-2.5 h-2.5 rounded-full bg-bamou animate-pulse"></span>
-            <span>Live Interactive Preview: bamou-erp-app.html</span>
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-cyan-400"></span>
+            <div>
+              <h3 class="font-bold text-white text-sm">LANK Hardware Webshop</h3>
+              <p class="text-xs text-slate-400">3D-Float Gerät, Finish-Picker & Cart-Drawer</p>
+            </div>
           </div>
-          <span class="text-xs text-slate-500 font-mono">100% Client-Side with LocalStorage</span>
+          <a href="./apps/lank-webshop.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-black font-bold text-xs hover:bg-cyan-400 transition-colors">
+            Öffnen ↗
+          </a>
         </div>
-        <iframe src="./bamou-erp-app.html" class="w-full h-[700px] border-0 bg-white"></iframe>
-      </div>
 
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+            <div>
+              <h3 class="font-bold text-white text-sm">PhaseFit FemTech App</h3>
+              <p class="text-xs text-slate-400">Zyklusrad, Workouts & Ernährungs-Guide</p>
+            </div>
+          </div>
+          <a href="./apps/phasefit-app.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-rose-500 text-white font-bold text-xs hover:bg-rose-400 transition-colors">
+            Öffnen ↗
+          </a>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+            <div>
+              <h3 class="font-bold text-white text-sm">VAMONT 3D Walltrainer</h3>
+              <p class="text-xs text-slate-400">Three.js 3D Studio, Holz-Wechsler & Kabelzug</p>
+            </div>
+          </div>
+          <a href="./apps/vamont-3d-landing.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-amber-500 text-black font-bold text-xs hover:bg-amber-400 transition-colors">
+            Öffnen ↗
+          </a>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between md:col-span-2">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-orange-400"></span>
+            <div>
+              <h3 class="font-bold text-white text-sm">Playground Instruments 3D Synthesizer</h3>
+              <p class="text-xs text-slate-400">Three.js 3D Keyboard + Live spielbare Web Audio Engine (Tasten A-K)</p>
+            </div>
+          </div>
+          <a href="./apps/playground-instruments-3d.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-orange-500 text-black font-bold text-xs hover:bg-orange-400 transition-colors">
+            Öffnen ↗
+          </a>
+        </div>
+
+      </div>
     </section>
 
   </main>
 
-  <!-- Interactive JavaScript logic -->
   <script>
-    // Tab switching
     function switchTab(tabId) {
       document.querySelectorAll('section[id^="tab-"]').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -576,60 +514,30 @@ Gib die vollständige, sofort lauffähige `index.html` ohne Auslassungen in eine
       lucide.createIcons();
     }
 
-    // Toast helper
-    function showToast(message, isSuccess = true) {
+    function showToast(message) {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
-      toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 ${
-        isSuccess ? 'bg-slate-900 text-white border border-bamou/40 shadow-bamou/10' : 'bg-red-950 text-red-200 border border-red-800'
-      }`;
-      
-      toast.innerHTML = `
-        <div class="w-5 h-5 rounded-full ${isSuccess ? 'bg-bamou/20 text-bamou' : 'bg-red-500/20 text-red-400'} flex items-center justify-center">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-        </div>
-        <span>${message}</span>
-      `;
-
+      toast.className = 'pointer-events-auto px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 bg-slate-900 text-white border border-bamou/40 shadow-bamou/10';
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-bamou"></span><span>${message}</span>`;
       container.appendChild(toast);
-      setTimeout(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      }, 10);
-
+      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
         setTimeout(() => toast.remove(), 300);
-      }, 2800);
+      }, 2500);
     }
 
-    // Generic copy function
     function copyText(text, msg) {
       navigator.clipboard.writeText(text).then(() => {
-        showToast(msg || 'In die Zwischenablage kopiert!');
-      }).catch(err => {
-        showToast('Kopieren fehlgeschlagen: ' + err, false);
+        showToast(msg || 'Kopiert!');
       });
     }
 
-    // Copy Prompt Pro
     function copyPromptPro() {
       const prompt = document.getElementById('promptText').innerText;
       copyText(prompt, '⚡ Prompt Pro für das bamou ERP kopiert!');
     }
 
-    // Copy Generated HTML
-    function copyGeneratedHtml() {
-      fetch('./bamou-erp-app.html')
-        .then(r => r.text())
-        .then(code => {
-          copyText(code, '💻 Vollständiger ERP HTML-Code kopiert!');
-        })
-        .catch(() => {
-          copyText('<!-- bamou ERP Code -->', 'Kopiert!');
-        });
-    }
-
-    // Initialize Lucide Icons
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
     });
