@@ -54,7 +54,7 @@
             <h1 class="font-extrabold text-lg tracking-tight text-white">aws First Incubator <span class="text-bamou">· Prompt Hub</span></h1>
             <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-bamou/10 text-bamou border border-bamou/20">Batch 1 · Gruppe 1</span>
           </div>
-          <p class="text-xs text-slate-400">One-Shot Megaprompts & Live-Apps für alle Gruppe 1 Teams (Markhof Wien)</p>
+          <p class="text-xs text-slate-400">One-Shot Megaprompts mit allen verlinkten GitHub-Assets für alle Gruppe 1 Teams</p>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
         </button>
         <button onclick="switchTab('apps')" id="tabBtn-apps" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-white flex items-center gap-2">
           <i data-lucide="layers" class="w-4 h-4 text-bamou"></i>
-          <span>Live-Apps</span>
+          <span>Live-Apps (5)</span>
         </button>
       </div>
 
@@ -95,10 +95,10 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span>One-Shot Megaprompts zum Kopieren</span>
+            <span>One-Shot Megaprompts mit allen verlinkten GitHub-Assets</span>
             <span class="text-xs px-2 py-0.5 rounded-md bg-bamou/10 text-bamou border border-bamou/20">Production-Ready</span>
           </h2>
-          <p class="text-sm text-slate-400">Wähle ein Startup aus, klicke auf <strong>„Prompt kopieren“</strong> und füge ihn direkt in Claude, ChatGPT oder Antigravity ein.</p>
+          <p class="text-sm text-slate-400">Jeder Prompt enthält direkte Links zu den GitHub-Repositories, Raw-Code, Web-Assets und CDNs. Wähle ein Startup und klicke auf <strong>„Prompt kopieren“</strong>.</p>
         </div>
 
         <button onclick="copyCurrentPrompt()" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-bamou/20 flex items-center gap-2 active:scale-95">
@@ -146,7 +146,7 @@
           </div>
 
           <div class="flex items-center gap-3">
-            <span class="text-[11px] text-slate-500 font-mono">Single-File HTML Output</span>
+            <span class="text-[11px] text-slate-500 font-mono">Mit GitHub Assets & CDNs</span>
             <button onclick="copyCurrentPrompt()" class="text-bamou hover:underline font-bold flex items-center gap-1">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i> Kopieren
             </button>
@@ -450,7 +450,7 @@
   </main>
 
   <script>
-    // 5 Full Production Prompts Database
+    // 5 Full Production Prompts with Live GitHub Assets and CDNs
     const PROMPTS = {
       bamou: {
         title: "bamou ERP Single-File One-Shot",
@@ -459,23 +459,37 @@
         colorClass: "bg-bamou text-slate-950",
         code: `Baue ein vollständiges, hochmodernes und interaktives B2B-ERP-System für zukunftsorientierte KMU als eigenständige, produktionsreife Single-File-Webanwendung (\`index.html\`).
 
-Die gesamte Anwendung muss zu 100 % in der visuellen Identität, Typografie und Tonalität der Marke **bamou** (https://bamou.at) gehalten sein – getreu dem Markenversprechen: 
-*"Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus."* 
+### 0. Verlinkte Live-Assets & Referenzen (GitHub & CDN)
+- **GitHub Repository:** https://github.com/servas-ai/aws-batch1-gruppe1-showcase
+- **Live Referenz-Implementierung:** https://servas-ai.github.io/aws-batch1-gruppe1-showcase/apps/bamou-erp.html
+- **Vollständiger Quellcode (GitHub Raw):** https://raw.githubusercontent.com/servas-ai/aws-batch1-gruppe1-showcase/master/apps/bamou-erp.html
+- **Offizielle Startup-Website:** https://bamou.at
+- **Offizielles SVG-Logo Asset:** https://bamou.at/assets/bamou-logo-BKZjl5i1.svg
+- **CSS Framework (CDN):** https://cdn.tailwindcss.com
+- **Icons (CDN):** https://unpkg.com/lucide@latest
+- **Charts Engine (CDN):** https://cdn.jsdelivr.net/npm/chart.js
+- **Google Fonts (CDN):** https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap
+
+---
 
 ### 1. bamou Brand Identity & Design System
-- Primary: \`#4fc17e\` (bamou Mint-Grün), Hover: \`#41a86b\`, Accent Subtle: \`rgba(79, 193, 126, 0.08)\`
-- Background: \`#fcfdfd\`, Karten \`#ffffff\`, Sidebar in Deep Slate \`#0f172a\`, Borders \`#e8ecef\`
-- Typography: Google Font \`Inter\` (\`font-sans\`), Tabular Figures (\`font-mono\` für Beträge/IBANs)
-- Original 3-Säulen-Logo (SVG):
+Die gesamte Anwendung muss zu 100 % in der visuellen Identität, Typografie und Tonalität der Marke **bamou** gehalten sein (Claim: *"Zettel, Tabellen und Post-its – Digitalisierung sieht anders aus"*):
+- **Brand Tokens:**
+  - Primary: \`#4fc17e\` (bamou Mint-Grün), Hover: \`#41a86b\`, Accent Subtle: \`rgba(79, 193, 126, 0.08)\`
+  - Background: \`#fcfdfd\`, Karten \`#ffffff\`, Sidebar in Deep Slate \`#0f172a\`, Borders \`#e8ecef\`
+  - Typography: Google Font \`Inter\` (\`font-sans\`), Tabular Figures (\`font-mono\` für Beträge/IBANs)
+- **Original 3-Säulen-Logo (Inline-SVG):**
   \`<svg viewBox="0 0 552 552"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>\`
 
-### 2. Module
-- **Dashboard:** KPIs (Monatsumsatz, Offene Posten, Verrechenbare Stunden, Bankguthaben), Chart.js 6-Monats-Umsatzverlauf in \`#4fc17e\`, Aktivitäts-Feed.
-- **Faktura / Rechnungen:** Rechnungsliste mit Status-Pills (\`Bezahlt\`, \`Offen\`, \`Überfällig\`), 1-Klick-Statuswechsel, Druck- und PDF-Vorschau (DIN-A4 mit Firmenkopf, UID, 20% USt nach österr. UStG, Bankverbindung) via \`window.print()\`.
-- **Kunden / CRM:** Tabelle mit UID-Nummer (ATU...), Ansprechpartnern, offenem Saldo und Neuanlage-Modal.
-- **Projekt-Zeiterfassung:** Integriertes Timer-Widget (Start/Stopp), manuelle Schnellerfassung, Projektzuordnung.
-- **BMD-Export:** 1-Klick-Download einer buchungsfertigen CSV-Datei für Steuerberater (BMD NTCS Buchungszeilen).
-- **Persistenz:** Volle \`localStorage\`-Persistenz aller Änderungen + Vorbefüllung mit realistischen Demodaten.
+---
+
+### 2. Module & Funktionalitäten
+1. **Dashboard:** KPIs (Monatsumsatz, Offene Posten, Verrechenbare Stunden, Bankguthaben), Chart.js 6-Monats-Umsatzverlauf in \`#4fc17e\`, Aktivitäts-Feed.
+2. **Faktura / Rechnungen:** Rechnungsliste mit Status-Pills (\`Bezahlt\`, \`Offen\`, \`Überfällig\`), 1-Klick-Statuswechsel, Druck- und PDF-Vorschau (DIN-A4 mit Firmenkopf, UID, 20% USt nach österr. UStG, Bankverbindung) via \`window.print()\`.
+3. **Kunden / CRM:** Tabelle mit UID-Nummer (ATU...), Ansprechpartnern, offenem Saldo und Neuanlage-Modal.
+4. **Projekt-Zeiterfassung:** Integriertes Timer-Widget (Start/Stopp), manuelle Schnellerfassung, Projektzuordnung.
+5. **BMD-Export:** 1-Klick-Download einer buchungsfertigen CSV-Datei für Steuerberater (BMD NTCS Buchungszeilen).
+6. **Persistenz:** Volle \`localStorage\`-Persistenz aller Änderungen + Vorbefüllung mit realistischen Demodaten.
 
 Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
       },
@@ -484,19 +498,34 @@ Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in ei
         filename: "lank-webshop-megaprompt.md",
         button: "LANK Prompt kopieren",
         colorClass: "bg-cyan-500 text-black",
-        code: `Erstelle eine vollständige, hochmoderne und interaktive Single-File-E-Commerce-Landingpage (\`index.html\`) für das Consumer-Hardware-Startup **LANK** (https://lanktechnology.com).
+        code: `Erstelle eine vollständige, hochmoderne und interaktive Single-File-E-Commerce-Landingpage (\`index.html\`) für das Consumer-Hardware-Startup **LANK**.
+
+### 0. Verlinkte Live-Assets & Referenzen (GitHub & CDN)
+- **GitHub Repository:** https://github.com/servas-ai/aws-batch1-gruppe1-showcase
+- **Live Referenz-Implementierung:** https://servas-ai.github.io/aws-batch1-gruppe1-showcase/apps/lank-webshop.html
+- **Vollständiger Quellcode (GitHub Raw):** https://raw.githubusercontent.com/servas-ai/aws-batch1-gruppe1-showcase/master/apps/lank-webshop.html
+- **Offizielle Startup-Website:** https://lanktechnology.com
+- **Instagram / Media:** https://www.instagram.com/lank.technology/
+- **YouTube:** https://www.youtube.com/@lank.technology
+- **CSS Framework (CDN):** https://cdn.tailwindcss.com
+- **Icons (CDN):** https://unpkg.com/lucide@latest
+- **Google Fonts (CDN):** https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap
+
+---
 
 ### 1. Design & Ästhetik
 - Ästhetik im Stil von Teenage Engineering, Nothing und Apple Industrial Design.
 - Farbpalette: Deep Black \`#070709\`, Carbon Cards \`#111115\`, Border \`#1f1f26\`, Akzentfarbe Neon Cyan \`#00f2fe\` mit sanften Glow-Effekten.
 - Typografie: Plus Jakarta Sans + JetBrains Mono für technische Parameter.
 
+---
+
 ### 2. Interaktive Features
-- **3D-Hardware Hero:** Zentrales, schwebendes 3D-Geräte-Modell mit kinetischem CSS-3D-Float-Effekt (\`preserve-3d\`, \`rotateX/rotateY\`).
-- **Interaktiver Finish-Konfigurator:** Auswahl zwischen „Space Gray“, „Midnight Black“ und „Pure Silver“ – ändert sofort das Erscheinungsbild des 3D-Geräts.
-- **Slide-In Cart Drawer:** Voll funktionsfähiger Warenkorb mit Pre-Order-Kalkulation, Zwischensumme, Gratisversand-Pill und simuliertem Stripe-Checkout.
-- **Hardware-Deep-Dive:** Technische Spezifikationen (Unibody CNC Aluminium, 64-Bit Neural Core, Mag-Dock Ladesystem, Bluetooth 5.4 / Thread).
-- **Snappy Micro-Interactions:** Haptische Toast-Benachrichtigungen bei jeder Aktion.
+1. **3D-Hardware Hero:** Zentrales, schwebendes 3D-Geräte-Modell mit kinetischem CSS-3D-Float-Effekt (\`preserve-3d\`, \`rotateX/rotateY\`).
+2. **Interaktiver Finish-Konfigurator:** Auswahl zwischen „Space Gray“, „Midnight Black“ und „Pure Silver“ – ändert sofort das Erscheinungsbild des 3D-Geräts.
+3. **Slide-In Cart Drawer:** Voll funktionsfähiger Warenkorb mit Pre-Order-Kalkulation, Zwischensumme, Gratisversand-Pill und simuliertem Stripe-Checkout.
+4. **Hardware-Deep-Dive:** Technische Spezifikationen (Unibody CNC Aluminium, 64-Bit Neural Core, Mag-Dock Ladesystem, Bluetooth 5.4 / Thread).
+5. **Snappy Micro-Interactions:** Haptische Toast-Benachrichtigungen bei jeder Aktion.
 
 Gib die vollständige, direkt im Browser lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
       },
@@ -505,26 +534,37 @@ Gib die vollständige, direkt im Browser lauffähige \`index.html\` ohne Auslass
         filename: "phasefit-app-megaprompt.md",
         button: "PhaseFit Prompt kopieren",
         colorClass: "bg-rose-500 text-white",
-        code: `Baue eine vollständige, wunderschöne und interaktive Single-File-Web-App (\`index.html\`) für das österreichische FemTech-Startup **PhaseFit** (https://phasefit.app).
+        code: `Baue eine vollständige, wunderschöne und interaktive Single-File-Web-App (\`index.html\`) für das österreichische FemTech-Startup **PhaseFit**.
+
+### 0. Verlinkte Live-Assets & Referenzen (GitHub & CDN)
+- **GitHub Repository:** https://github.com/servas-ai/aws-batch1-gruppe1-showcase
+- **Live Referenz-Implementierung:** https://servas-ai.github.io/aws-batch1-gruppe1-showcase/apps/phasefit-app.html
+- **Vollständiger Quellcode (GitHub Raw):** https://raw.githubusercontent.com/servas-ai/aws-batch1-gruppe1-showcase/master/apps/phasefit-app.html
+- **Offizielle Startup-Website:** https://phasefit.app
+- **Instagram / Social:** https://www.instagram.com/phasefit.app/
+- **LinkedIn:** https://www.linkedin.com/company/phasefit-app/
+- **CSS Framework (CDN):** https://cdn.tailwindcss.com
+- **Icons (CDN):** https://unpkg.com/lucide@latest
+- **Google Fonts (CDN):** https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap
+
+---
 
 ### 1. Konzept & Design
 - **Konzept:** Cycle-Synced Fitness & Nutrition – Trainings-, Ernährungs- und Erholungspläne, die sich dynamisch an die 4 biologischen Zyklusphasen der Frau anpassen.
 - **Design:** Warme, luxuriöse Wellness-Ästhetik (Creme-Hintergrund \`#fbf8f5\`, elegante Karten \`#ffffff\`, weiche Schatten, zarte Serif-Akzente mit Google Font *Playfair Display* und modernem Body *Plus Jakarta Sans*).
 - **Phasen-Farbcodierung:** Menstruell (Rose/Berry), Follikel (Smaragdgrün), Ovulation (Warmes Amber), Luteal (Sanftes Lavendel).
 
+---
+
 ### 2. Kernfunktionen
-- **Interaktiver Zyklus-Wahlschalter:**
-  - Schaltet zwischen den 4 Phasen (Menstruell, Follikel, Ovulation, Luteal) um.
-  - Passt in Echtzeit die gesamte UI an: Workout des Tages, Trainingsintensität, Ernährungstipps und Hormonfokus.
-- **Workout of the Day:**
-  - Ovulation: Peak Strength & schwere Grundübungen (Östrogen-Peak).
-  - Luteal: Reformer Pilates & Core Control (Progesteron-Dominanz).
-  - Menstruell: Sanfte Mobilität & Stretching.
-  - Follikel: Dynamisches HIIT & Kraftaufbau.
-- **Ernährung & Seed Cycling:**
-  - Anzeige spezifischer Mikronährstoffe (Eisen, Zink, B-Vitamine) und passender Lebensmittel für die jeweilige Phase.
-- **Symptom- & Mood-Logger:**
-  - One-Click-Buttons zum schnellen Protokollieren von Energielevel, Fokus und Stimmung mit sofortigem Toast-Feedback.
+1. **Interaktiver Zyklus-Wahlschalter:** Schaltet zwischen den 4 Phasen (Menstruell, Follikel, Ovulation, Luteal) um. Passt in Echtzeit die gesamte UI an: Workout des Tages, Trainingsintensität, Ernährungstipps und Hormonfokus.
+2. **Workout of the Day:**
+   - Ovulation: Peak Strength & schwere Grundübungen (Östrogen-Peak).
+   - Luteal: Reformer Pilates & Core Control (Progesteron-Dominanz).
+   - Menstruell: Sanfte Mobilität & Stretching.
+   - Follikel: Dynamisches HIIT & Kraftaufbau.
+3. **Ernährung & Seed Cycling:** Anzeige spezifischer Mikronährstoffe (Eisen, Zink, B-Vitamine) und passender Lebensmittel für die jeweilige Phase.
+4. **Symptom- & Mood-Logger:** One-Click-Buttons zum schnellen Protokollieren von Energielevel, Fokus und Stimmung mit sofortigem Toast-Feedback.
 
 Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in einem einzigen Codeblock aus.`
       },
@@ -533,9 +573,22 @@ Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in ei
         filename: "vamont-3d-megaprompt.md",
         button: "VAMONT Prompt kopieren",
         colorClass: "bg-amber-500 text-black",
-        code: `Erstelle eine vollständige, luxuriöse Single-File-Landingpage (\`index.html\`) für den smarten Wand-Krafttrainer **VAMONT** (https://vamont.fit), inklusive eines **voll interaktiven 3D-Produktmodells via Three.js**.
+        code: `Erstelle eine vollständige, luxuriöse Single-File-Landingpage (\`index.html\`) für den smarten Wand-Krafttrainer **VAMONT**, inklusive eines **voll interaktiven 3D-Produktmodells via Three.js**.
 
-### 1. 3D-Studio (Three.js + OrbitControls via CDN)
+### 0. Verlinkte Live-Assets & Referenzen (GitHub & CDN)
+- **GitHub Repository:** https://github.com/servas-ai/aws-batch1-gruppe1-showcase
+- **Live Referenz-Implementierung:** https://servas-ai.github.io/aws-batch1-gruppe1-showcase/apps/vamont-3d-landing.html
+- **Vollständiger Quellcode (GitHub Raw):** https://raw.githubusercontent.com/servas-ai/aws-batch1-gruppe1-showcase/master/apps/vamont-3d-landing.html
+- **Offizielle Startup-Website:** https://vamont.fit
+- **3D Graphics Engine (CDN):** https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+- **3D OrbitControls (CDN):** https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js
+- **CSS Framework (CDN):** https://cdn.tailwindcss.com
+- **Icons (CDN):** https://unpkg.com/lucide@latest
+- **Google Fonts (CDN):** https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,600;1,400&display=swap
+
+---
+
+### 1. 3D-Studio (Three.js + OrbitControls)
 - **3D-Szene:** Dunkles Studio-Setting mit Spotlights, warmen Reflexionen und OrbitControls (360° drehbar, zoombar, Neigungswinkel begrenzt).
 - **Prozedurales 3D-Modell des Walltrainers:**
   - Edles Holz-Wandpaneel (Hintergrund-Trägerplatte).
@@ -546,6 +599,8 @@ Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in ei
   - Buttons für „Amerikanischer Nussbaum“, „Eiche Natur“ und „Carbon Black“ ändern die 3D-Materialfarbe des Holzpaneels in Echtzeit.
 - **Kabelzug-Animationssimulation:**
   - Ein Button *"Kabelzug testen"* animiert die Griffe und Seile in einer dynamischen Zugbewegung mit sanfter Rückführung.
+
+---
 
 ### 2. Luxus-UI & B2B-Positionierung
 - Ansprache für Penthouse-Besitzer, Architekten, Boutique-Hotels und Physiotherapie-Studios.
@@ -560,11 +615,29 @@ Gib die vollständige, direkt im Browser lauffähige \`index.html\` ohne Auslass
         filename: "playground-instruments-3d-megaprompt.md",
         button: "Playground Prompt kopieren",
         colorClass: "bg-orange-500 text-black",
-        code: `Erstelle eine spektakuläre, vollständige Single-File-Website (\`index.html\`) für das Musik-Hardware-Startup **Playground Instruments** (https://playground-instruments.com) aus Graz. Die Anwendung kombiniert ein **interaktives 3D-Modell** mit einer **echten, im Browser spielbaren Synthesizer-Audio-Engine**.
+        code: `Erstelle eine spektakuläre, vollständige Single-File-Website (\`index.html\`) für das Musik-Hardware-Startup **Playground Instruments** aus Graz. Die Anwendung kombiniert ein **interaktives 3D-Modell** mit einer **echten, im Browser spielbaren Synthesizer-Audio-Engine**.
+
+### 0. Verlinkte Live-Assets & Referenzen (GitHub & CDN)
+- **GitHub Repository:** https://github.com/servas-ai/aws-batch1-gruppe1-showcase
+- **Live Referenz-Implementierung:** https://servas-ai.github.io/aws-batch1-gruppe1-showcase/apps/playground-instruments-3d.html
+- **Vollständiger Quellcode (GitHub Raw):** https://raw.githubusercontent.com/servas-ai/aws-batch1-gruppe1-showcase/master/apps/playground-instruments-3d.html
+- **Offizielle Startup-Website:** https://playground-instruments.com
+- **Instagram / Social:** https://www.instagram.com/playgrndinstrmnts/
+- **LinkedIn:** https://www.linkedin.com/company/playground-instruments/
+- **YouTube:** https://www.youtube.com/@playgroundinstruments
+- **3D Graphics Engine (CDN):** https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+- **3D OrbitControls (CDN):** https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js
+- **CSS Framework (CDN):** https://cdn.tailwindcss.com
+- **Icons (CDN):** https://unpkg.com/lucide@latest
+- **Google Fonts (CDN):** https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap
+
+---
 
 ### 1. Konzept des Instruments
 - Weltweit erste Tastatur, die eine mechanische QWERTY-Computertastatur (zum Schreiben & Coden) nahtlos mit einem 25-Tasten-Musiksynthesizer und MIDI-Controller vereint.
 - Entwickelt von Stefan Baumgartner, Dominik Sabathy und Aron Petritz im Unicorn Innovation Hub Graz.
+
+---
 
 ### 2. Live Web Audio API Synthesizer
 - **Echte Klangsynthese:** Kein vorgefertigtes Audio-Sample, sondern echte Oszillatoren (Sawtooth, Sine, Square), Low-Pass-Filter und dynamische ADSR-Hüllkurven.
@@ -573,10 +646,14 @@ Gib die vollständige, direkt im Browser lauffähige \`index.html\` ohne Auslass
   1. Klickbare Klaviertasten auf dem Bildschirm (inkl. Halbtöne C, C#, D, D# ...).
   2. Physische Tastatur-Shortcuts (Tasten A, W, S, E, D, F, T, G, Z, H, U, J, K spielen Töne).
 
+---
+
 ### 3. Three.js 3D-Modell des Hybrid-Keyboards
 - Prozedurales 3D-Gehäuse mit oberen mechanischen Keycaps, unterer 25-Tasten-Klaviatur und 4 Drehreglern (Rotary Knobs).
 - OrbitControls (Drehen, Neigen, Zoomen).
 - Visuelles Feedback: Bei jedem gespielten Ton leuchtet das 3D-Chassis subtil im Takt auf.
+
+---
 
 ### 4. Story & Hardware-Spezifikationen
 - Hintergrund zum Rising Star Award der Gründungsgarage Graz.
@@ -649,6 +726,12 @@ Gib die vollständige, sofort lauffähige \`index.html\` ohne Auslassungen in ei
         toast.classList.add('opacity-0', 'translate-y-2');
         setTimeout(() => toast.remove(), 300);
       }, 2500);
+    }
+
+    function copyText(text, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(msg || 'Kopiert!');
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
