@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-slate-50 text-slate-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bamou · Modernes KMU-ERP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            bamou: {
+              DEFAULT: '#4fc17e',
+              hover: '#41a86b',
+              light: '#ecfdf5',
+              subtle: 'rgba(79, 193, 126, 0.08)',
+              border: 'rgba(79, 193, 126, 0.3)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @media print {
+      body * { visibility: hidden; }
+      #invoicePrintModal, #invoicePrintModal * { visibility: visible; }
+      #invoicePrintModal { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body class="h-full flex overflow-hidden font-sans bg-[#fafafa] text-slate-900 antialiased selection:bg-bamou selection:text-slate-950">
+
+  <!-- Toast Notification System -->
+  <div id="toastArea" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- App Wrapper -->
+  <div class="flex h-full w-full">
+
+    <!-- 1. LEFT SIDEBAR -->
+    <aside class="w-64 bg-slate-950 text-slate-300 flex flex-col border-r border-slate-900 select-none z-20 shrink-0">
+      
+      <!-- Logo Header -->
+      <div class="h-16 px-6 flex items-center gap-3 border-b border-slate-800/80">
+        <div class="w-7 h-7 flex items-center justify-center">
+          <svg class="h-full w-auto" viewBox="0 0 552 552" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
+            <rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
+            <rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-extrabold text-lg tracking-tight text-white leading-none">bamou</span>
+          <span class="text-[10px] tracking-wider text-slate-500 uppercase font-semibold mt-0.5">KMU Operating System</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <button onclick="nav('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors bg-slate-900 text-white border border-slate-800">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-bamou"></i>
+          <span>Dashboard</span>
+        </button>
+
+        <button onclick="nav('invoices')" id="nav-invoices" class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-900/60">
+          <div class="flex items-center gap-3">
+            <i data-lucide="receipt" class="w-4 h-4 text-slate-400"></i>
+            <span>Rechnungen</span>
+          </div>
+          <span id="badge-invoices" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">5</span>
+        </button>
+
+        <button onclick="nav('customers')" id="nav-customers" class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-900/60">
+          <div class="flex items-center gap-3">
+            <i data-lucide="users" class="w-4 h-4 text-slate-400"></i>
+            <span>Kunden (CRM)</span>
+          </div>
+          <span id="badge-customers" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">4</span>
+        </button>
+
+        <button onclick="nav('timetracking')" id="nav-timetracking" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-900/60">
+          <i data-lucide="timer" class="w-4 h-4 text-slate-400"></i>
+          <span>Zeiterfassung</span>
+        </button>
+
+        <button onclick="nav('bmd')" id="nav-bmd" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-900/60">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-slate-400"></i>
+          <span>BMD / Export</span>
+        </button>
+
+        <button onclick="nav('settings')" id="nav-settings" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-900/60">
+          <i data-lucide="settings" class="w-4 h-4 text-slate-400"></i>
+          <span>Einstellungen</span>
+        </button>
+      </nav>
+
+      <!-- Active Timer Floating Widget -->
+      <div class="p-3 mx-3 mb-3 bg-slate-900 border border-slate-800 rounded-xl">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-bamou animate-pulse"></span>
+            Aktiver Timer
+          </span>
+          <span id="sidebarTimerDisplay" class="font-mono text-xs font-bold text-bamou">00:14:32</span>
+        </div>
+        <p id="sidebarTimerProject" class="text-xs text-white truncate font-medium">Fintaro · Sprint Alpha</p>
+        <div class="flex gap-1.5 mt-2">
+          <button onclick="toggleSidebarTimer()" id="sidebarTimerBtn" class="flex-1 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-white transition-colors">
+            Stopp
+          </button>
+        </div>
+      </div>
+
+      <!-- User Profile Footer -->
+      <div class="p-4 border-t border-slate-900 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-bamou/20 border border-bamou/30 text-bamou font-bold flex items-center justify-center text-xs">
+            MH
+          </div>
+          <div class="text-xs">
+            <p class="font-semibold text-white">Martin Hausleitner</p>
+            <p class="text-slate-500 truncate">FlexCo Admin</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 2. MAIN WORKSPACE -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-white">
+      
+      <!-- Top Bar -->
+      <header class="h-16 border-b border-slate-200 bg-white px-8 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-4 flex-1">
+          <!-- Command Palette Trigger -->
+          <div class="relative max-w-md w-full">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="text" placeholder="Suchen (Kunden, Rechnungen, Befehle)... ⌘K" 
+              class="w-full bg-slate-100/80 border border-slate-200 rounded-xl pl-9 pr-4 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-bamou focus:bg-white transition-all">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="openModal('invoiceModal')" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm shadow-bamou/30 flex items-center gap-2 active:scale-95">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Neue Rechnung</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Main Content -->
+      <div class="flex-1 overflow-y-auto p-8 bg-[#fbfcfd]">
+
+        <!-- VIEW: DASHBOARD -->
+        <div id="view-dashboard" class="space-y-8">
+          
+          <!-- Welcome Banner -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold tracking-tight text-slate-900">Guten Tag, Martin 👋</h2>
+              <p class="text-xs text-slate-500 mt-1">Hier ist die Finanz- und Betriebsübersicht für September 2026.</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <i data-lucide="calendar" class="w-3.5 h-3.5 text-bamou"></i>
+              <span>23. September 2026 · Wien</span>
+            </div>
+          </div>
+
+          <!-- Hero KPI Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                <span>Monatsumsatz (Netto)</span>
+                <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md font-semibold text-[11px]">+14.2%</span>
+              </div>
+              <p class="text-2xl font-extrabold text-slate-900 font-mono tracking-tight" id="kpi-revenue">€ 28.450,00</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-bamou h-full rounded-full" style="width: 78%"></div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                <span>Offene Posten</span>
+                <span class="text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md font-semibold text-[11px]" id="kpi-open-count">2 fällig</span>
+              </div>
+              <p class="text-2xl font-extrabold text-slate-900 font-mono tracking-tight" id="kpi-open">€ 6.240,00</p>
+              <p class="text-[11px] text-slate-400 mt-3">Durchschn. Zahlungsziel: 14 Tage</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                <span>Projektstunden</span>
+                <span class="text-bamou bg-bamou/10 px-2 py-0.5 rounded-md font-semibold text-[11px]">89% verrechenbar</span>
+              </div>
+              <p class="text-2xl font-extrabold text-slate-900 font-mono tracking-tight">142,5 h</p>
+              <p class="text-[11px] text-slate-400 mt-3">Ø Stundensatz: € 140,00</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                <span>Bankguthaben</span>
+                <span class="text-slate-500 font-mono text-[11px]">Erste Bank</span>
+              </div>
+              <p class="text-2xl font-extrabold text-slate-900 font-mono tracking-tight">€ 74.890,20</p>
+              <p class="text-[11px] text-slate-400 mt-3">Runway: 11,4 Monate</p>
+            </div>
+
+          </div>
+
+          <!-- Chart & Feed Split -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Chart Container -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">Umsatzentwicklung (Q2 - Q3 2026)</h3>
+                  <p class="text-xs text-slate-400">Vergleich Netto-Umsatz und verrechnete Stunden</p>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600">6 Monate</span>
+              </div>
+              <div class="h-64">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Recent Invoices / Activity -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="font-bold text-sm text-slate-900">Letzte Aktivitäten</h3>
+                  <button onclick="nav('invoices')" class="text-xs text-bamou font-semibold hover:underline">Alle anzeigen</button>
+                </div>
+                <div id="activityFeed" class="space-y-3.5 text-xs">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+              
+              <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span>BMD-Schnittstelle:</span>
+                <span class="text-emerald-600 font-medium flex items-center gap-1">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Synchron
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- VIEW: INVOICES -->
+        <div id="view-invoices" class="space-y-6 hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold tracking-tight text-slate-900">Faktura & Ausgangsrechnungen</h2>
+              <p class="text-xs text-slate-500">Erstelle, verwalte und exportiere österreichische Rechnungen (20% USt).</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="exportBMD()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-1.5 border border-slate-300">
+                <i data-lucide="download" class="w-3.5 h-3.5 text-slate-600"></i> BMD Export (CSV)
+              </button>
+              <button onclick="openModal('invoiceModal')" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-bold px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Neue Rechnung
+              </button>
+            </div>
+          </div>
+
+          <!-- Invoices Table -->
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold">
+                  <th class="py-3 px-4">Nummer</th>
+                  <th class="py-3 px-4">Kunde</th>
+                  <th class="py-3 px-4">Datum</th>
+                  <th class="py-3 px-4">Fälligkeit</th>
+                  <th class="py-3 px-4 text-right">Netto</th>
+                  <th class="py-3 px-4 text-right">Brutto (20%)</th>
+                  <th class="py-3 px-4 text-center">Status</th>
+                  <th class="py-3 px-4 text-right">Aktionen</th>
+                </tr>
+              </thead>
+              <tbody id="invoicesTableBody" class="divide-y divide-slate-100">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- VIEW: CUSTOMERS -->
+        <div id="view-customers" class="space-y-6 hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold tracking-tight text-slate-900">Kundenstamm (CRM)</h2>
+              <p class="text-xs text-slate-500">Firmenkunden mit UID (ATU), Ansprechpartnern und Zahlungskonditionen.</p>
+            </div>
+            <button onclick="openModal('customerModal')" class="bg-bamou hover:bg-bamou-hover text-slate-950 font-bold px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-1.5">
+              <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Kunde anlegen
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="customersGrid">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+
+        <!-- VIEW: TIME TRACKING -->
+        <div id="view-timetracking" class="space-y-6 hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold tracking-tight text-slate-900">Projekt-Zeiterfassung</h2>
+              <p class="text-xs text-slate-500">Stoppe Arbeitszeiten auf Projekte oder erfasse manuelle Einträge.</p>
+            </div>
+          </div>
+
+          <!-- Tracker Bar -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-center gap-4 justify-between">
+            <div class="flex-1 w-full grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input type="text" id="timeEntryDesc" placeholder="Woran arbeitest du gerade?" class="px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-bamou outline-none">
+              <select id="timeEntryProject" class="px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-bamou outline-none bg-white">
+                <option value="Fintaro Core Development">Fintaro · Core Development</option>
+                <option value="Huber Bau ERP Integration">Huber Bau · ERP Integration</option>
+                <option value="Leitner & Partner Mandant">Leitner & Partner · Mandant</option>
+              </select>
+              <div class="flex items-center gap-2">
+                <input type="number" id="timeEntryHours" placeholder="Stunden (z.B. 2.5)" step="0.5" class="px-3 py-2 rounded-xl border border-slate-200 text-xs w-full focus:ring-2 focus:ring-bamou outline-none">
+                <button onclick="addManualTime()" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-4 py-2 rounded-xl text-xs shrink-0 transition-colors">
+                  Buchen
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Time Entries Table -->
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold">
+                  <th class="py-3 px-4">Datum</th>
+                  <th class="py-3 px-4">Projekt</th>
+                  <th class="py-3 px-4">Beschreibung</th>
+                  <th class="py-3 px-4 text-right">Dauer</th>
+                  <th class="py-3 px-4 text-right">Betrag (€ 140/h)</th>
+                </tr>
+              </thead>
+              <tbody id="timeTableBody" class="divide-y divide-slate-100 font-mono">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- VIEW: BMD EXPORT -->
+        <div id="view-bmd" class="space-y-6 hidden">
+          <div>
+            <h2 class="text-xl font-bold tracking-tight text-slate-900">BMD / Steuerberater Schnittstelle</h2>
+            <p class="text-xs text-slate-500">Erzeuge buchungsfertige Export-Dateien für österreichische Steuerkanzleien.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm max-w-xl space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-bamou/10 text-bamou flex items-center justify-center font-bold">
+                BMD
+              </div>
+              <div>
+                <h3 class="font-bold text-sm">BMD NTCS Buchungszeilen-Export</h3>
+                <p class="text-xs text-slate-400">Kompatibel mit BMD 5.x & NTCS Kontenplan (Österreich)</p>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div class="flex justify-between"><span>Verfügbare Rechnungen:</span> <span class="font-mono font-bold" id="bmd-count">5</span></div>
+              <div class="flex justify-between"><span>Buchungsvolumen Netto:</span> <span class="font-mono font-bold" id="bmd-volume">€ 28.450,00</span></div>
+              <div class="flex justify-between"><span>Errechnete USt (20%):</span> <span class="font-mono font-bold" id="bmd-tax">€ 5.690,00</span></div>
+            </div>
+
+            <button onclick="exportBMD()" class="w-full bg-bamou hover:bg-bamou-hover text-slate-950 font-bold py-3 rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-sm shadow-bamou/20">
+              <i data-lucide="file-down" class="w-4 h-4"></i>
+              <span>BMD Buchungsstapel herunterladen (CSV)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- VIEW: SETTINGS -->
+        <div id="view-settings" class="space-y-6 hidden">
+          <div>
+            <h2 class="text-xl font-bold tracking-tight text-slate-900">Mandanten-Einstellungen</h2>
+            <p class="text-xs text-slate-500">Stammdaten deines österreichischen Unternehmens.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm max-w-xl space-y-4 text-xs">
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Unternehmensname & Rechtsform</label>
+              <input type="text" value="Fintaro AI FlexCo" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-bamou">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">UID-Nummer</label>
+                <input type="text" value="ATU79912458" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-bamou font-mono">
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Firmenbuchnummer</label>
+                <input type="text" value="FN 612849 v" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-bamou font-mono">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Bankverbindung (IBAN)</label>
+              <input type="text" value="AT61 2011 1827 9401 2289" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-bamou font-mono">
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <button onclick="resetDemoData()" class="text-xs text-red-500 hover:underline font-semibold">
+                Musterdaten zurücksetzen
+              </button>
+              <button onclick="showToast('Einstellungen gespeichert!')" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-4 py-2 rounded-xl">
+                Speichern
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEUE RECHNUNG -->
+  <div id="invoiceModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-xl w-full p-6 space-y-4 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-bold text-sm text-slate-900">Neue Ausgangsrechnung erstellen</h3>
+        <button onclick="closeModal('invoiceModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Kunde</label>
+          <select id="modalInvCustomer" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Zahlungsziel</label>
+          <select id="modalInvTerms" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white">
+            <option value="14">14 Tage Netto</option>
+            <option value="30">30 Tage Netto</option>
+            <option value="0">Sofort fällig</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-medium text-slate-700 mb-1">Leistungsbeschreibung / Position</label>
+        <input type="text" id="modalInvDesc" placeholder="z. B. Softwareentwicklung & Runbook Setup" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Netto-Betrag (€)</label>
+          <input type="number" id="modalInvAmount" placeholder="3500.00" step="100" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none font-mono">
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Umsatzsteuer</label>
+          <input type="text" value="20% (Standard Ö)" disabled class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-500">
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="closeModal('invoiceModal')" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-medium">Abbrechen</button>
+        <button onclick="saveInvoice()" class="px-4 py-2 rounded-xl bg-bamou hover:bg-bamou-hover text-slate-950 font-bold shadow-sm shadow-bamou/20">Rechnung anlegen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: KUNDE ANLEGEN -->
+  <div id="customerModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-4 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-bold text-sm text-slate-900">Neuen Kunden anlegen</h3>
+        <button onclick="closeModal('customerModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <div>
+        <label class="block font-medium text-slate-700 mb-1">Firmenname</label>
+        <input type="text" id="custName" placeholder="Müller Bau GmbH" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none">
+      </div>
+
+      <div>
+        <label class="block font-medium text-slate-700 mb-1">Ansprechpartner / E-Mail</label>
+        <input type="email" id="custEmail" placeholder="office@mueller-bau.at" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none">
+      </div>
+
+      <div>
+        <label class="block font-medium text-slate-700 mb-1">UID-Nummer (ATU)</label>
+        <input type="text" id="custUid" placeholder="ATU12345678" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none font-mono">
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="closeModal('customerModal')" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-medium">Abbrechen</button>
+        <button onclick="saveCustomer()" class="px-4 py-2 rounded-xl bg-bamou hover:bg-bamou-hover text-slate-950 font-bold">Kunde speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINT MODAL (DRUCKANSICHT) -->
+  <div id="invoicePrintModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 text-xs font-sans text-slate-800 space-y-6 max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex justify-between items-start border-b border-slate-200 pb-6">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="h-6 w-auto" viewBox="0 0 552 552" fill="none"><rect x="0" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="227" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/><rect x="454" y="0" width="97" height="551" rx="48.5" fill="#4fc17e"/></svg>
+            <span class="font-extrabold text-base text-slate-900">Fintaro AI FlexCo</span>
+          </div>
+          <p class="text-slate-400">Software & Enterprise Runbooks</p>
+          <p class="text-slate-400">Markhofgasse 19, 1030 Wien · UID: ATU79912458</p>
+        </div>
+        <div class="text-right">
+          <h2 class="text-xl font-extrabold text-slate-900" id="printNumber">RE-2026-001</h2>
+          <p class="text-slate-500 mt-1" id="printDate">Datum: 23.09.2026</p>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Rechnungsempfänger:</p>
+        <p class="font-bold text-sm text-slate-900" id="printCustomer">Huber Elektrotechnik GmbH</p>
+        <p class="text-slate-500" id="printCustomerUid">UID: ATU68219401</p>
+      </div>
+
+      <table class="w-full text-left border-collapse border-y border-slate-200 my-4">
+        <thead>
+          <tr class="text-slate-400 border-b border-slate-100 font-medium">
+            <th class="py-2">Pos.</th>
+            <th class="py-2">Beschreibung</th>
+            <th class="py-2 text-right">Netto</th>
+            <th class="py-2 text-right">USt (20%)</th>
+            <th class="py-2 text-right">Brutto</th>
+          </tr>
+        </thead>
+        <tbody class="font-mono">
+          <tr>
+            <td class="py-3">1</td>
+            <td class="py-3 font-sans font-medium" id="printDesc">Cloud Runbook Automatisierung</td>
+            <td class="py-3 text-right" id="printNet">€ 4.500,00</td>
+            <td class="py-3 text-right" id="printTax">€ 900,00</td>
+            <td class="py-3 text-right font-bold text-slate-900" id="printGross">€ 5.400,00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="flex justify-between items-end pt-4 border-t border-slate-200">
+        <div class="text-[11px] text-slate-500">
+          <p class="font-semibold text-slate-800">Zahlungsinformationen:</p>
+          <p>Erste Bank · IBAN: AT61 2011 1827 9401 2289 · BIC: GIBAATWWXXX</p>
+          <p>Zahlbar innerhalb von 14 Tagen ohne Abzug.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="closeModal('invoicePrintModal')" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-medium">Schließen</button>
+          <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold flex items-center gap-1.5">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> Drucken / PDF
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- APPLICATION LOGIC & STATE PERSISTENCE -->
+  <script>
+    // Initial Seed Data (Austrian KMU Context)
+    const DEFAULT_DATA = {
+      customers: [
+        { id: 1, name: "Huber Elektrotechnik GmbH", email: "office@huber-elektro.at", uid: "ATU68219401", balance: 5400 },
+        { id: 2, name: "Leitner & Partner KG", email: "kanzlei@leitner-steuern.at", uid: "ATU55401923", balance: 0 },
+        { id: 3, name: "Müller Holzbau e.U.", email: "info@mueller-holz.at", uid: "ATU71029411", balance: 840 },
+        { id: 4, name: "Kainz Digital Agentur", email: "hallo@kainz.agency", uid: "ATU79901422", balance: 0 }
+      ],
+      invoices: [
+        { id: "RE-2026-001", customerId: 1, date: "2026-09-18", due: "2026-10-02", desc: "Automatisierungs-Pipeline Phase 1", amount: 4500, status: "offen" },
+        { id: "RE-2026-002", customerId: 2, date: "2026-09-12", due: "2026-09-26", desc: "Monatspauschale Support & Runbooks", amount: 1850, status: "bezahlt" },
+        { id: "RE-2026-003", customerId: 3, date: "2026-09-05", due: "2026-09-19", desc: "Schnittstellenanbindung BMD", amount: 700, status: "überfällig" },
+        { id: "RE-2026-004", customerId: 4, date: "2026-08-28", due: "2026-09-11", desc: "Consulting & Architektur-Sprint", amount: 6200, status: "bezahlt" },
+        { id: "RE-2026-005", customerId: 1, date: "2026-08-15", due: "2026-08-29", desc: "Initiales Setup & Kick-Off", amount: 15200, status: "bezahlt" }
+      ],
+      timeEntries: [
+        { id: 1, date: "23.09.2026", project: "Fintaro Core Development", desc: "API Endpoint & Runbook Handler", hours: 4.5, rate: 140 },
+        { id: 2, date: "22.09.2026", project: "Huber Bau ERP Integration", desc: "Datenmigration BMD Konten", hours: 6.0, rate: 140 },
+        { id: 3, date: "21.09.2026", project: "Leitner & Partner Mandant", desc: "Abstimmung & Vorsteuer-Logik", hours: 3.5, rate: 140 }
+      ]
+    };
+
+    // State Handler
+    let appData = JSON.parse(localStorage.getItem('bamou_erp_state')) || DEFAULT_DATA;
+    function saveState() {
+      localStorage.setItem('bamou_erp_state', JSON.stringify(appData));
+      renderAll();
+    }
+
+    function resetDemoData() {
+      appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      saveState();
+      showToast("Musterdaten wiederhergestellt!");
+    }
+
+    // Navigation
+    function nav(viewId) {
+      document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white', 'border', 'border-slate-800');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeView = document.getElementById('view-' + viewId);
+      const activeBtn = document.getElementById('nav-' + viewId);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('bg-slate-900', 'text-white', 'border', 'border-slate-800');
+      }
+      lucide.createIcons();
+    }
+
+    // Toast
+    function showToast(msg) {
+      const container = document.getElementById('toastArea');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-bamou/30 text-xs font-semibold shadow-lg shadow-bamou/10 flex items-center gap-2 transform translate-y-2 opacity-0 transition-all duration-200";
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-bamou"></span><span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 250);
+      }, 2500);
+    }
+
+    // Modals
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); lucide.createIcons(); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    // Render Data
+    function renderAll() {
+      // Invoices
+      const tbody = document.getElementById('invoicesTableBody');
+      tbody.innerHTML = '';
+      let openTotal = 0;
+      let openCount = 0;
+      let revenueTotal = 0;
+
+      appData.invoices.forEach(inv => {
+        const cust = appData.customers.find(c => c.id === inv.customerId) || { name: 'Unbekannt' };
+        const gross = inv.amount * 1.20;
+        if (inv.status !== 'bezahlt') {
+          openTotal += gross;
+          openCount++;
+        }
+        revenueTotal += inv.amount;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/60 transition-colors";
+        
+        const statusBadge = inv.status === 'bezahlt'
+          ? '<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-[10px]">Bezahlt</span>'
+          : inv.status === 'überfällig'
+          ? '<span class="px-2 py-0.5 rounded-full bg-red-50 text-red-700 font-semibold text-[10px]">Überfällig</span>'
+          : '<span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-semibold text-[10px]">Offen</span>';
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono font-bold text-slate-900">${inv.id}</td>
+          <td class="py-3 px-4 font-medium text-slate-800">${cust.name}</td>
+          <td class="py-3 px-4 text-slate-500">${inv.date}</td>
+          <td class="py-3 px-4 text-slate-500">${inv.due}</td>
+          <td class="py-3 px-4 text-right font-mono">€ ${inv.amount.toLocaleString('de-DE', {minimumFractionDigits: 2})}</td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-slate-900">€ ${gross.toLocaleString('de-DE', {minimumFractionDigits: 2})}</td>
+          <td class="py-3 px-4 text-center">${statusBadge}</td>
+          <td class="py-3 px-4 text-right space-x-1.5">
+            <button onclick="previewInvoice('${inv.id}')" class="p-1 hover:text-bamou text-slate-400 transition-colors" title="Drucken / Vorschau"><i data-lucide="printer" class="w-3.5 h-3.5"></i></button>
+            <button onclick="toggleInvoicePaid('${inv.id}')" class="p-1 hover:text-emerald-600 text-slate-400 transition-colors" title="Status wechseln"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update KPIs
+      document.getElementById('kpi-revenue').innerText = '€ ' + revenueTotal.toLocaleString('de-DE', {minimumFractionDigits: 2});
+      document.getElementById('kpi-open').innerText = '€ ' + openTotal.toLocaleString('de-DE', {minimumFractionDigits: 2});
+      document.getElementById('kpi-open-count').innerText = openCount + ' fällig';
+      document.getElementById('badge-invoices').innerText = appData.invoices.length;
+      document.getElementById('bmd-count').innerText = appData.invoices.length;
+      document.getElementById('bmd-volume').innerText = '€ ' + revenueTotal.toLocaleString('de-DE', {minimumFractionDigits: 2});
+      document.getElementById('bmd-tax').innerText = '€ ' + (revenueTotal * 0.2).toLocaleString('de-DE', {minimumFractionDigits: 2});
+
+      // Activity Feed
+      const feed = document.getElementById('activityFeed');
+      feed.innerHTML = '';
+      appData.invoices.slice(0, 4).forEach(inv => {
+        const cust = appData.customers.find(c => c.id === inv.customerId) || { name: 'Kunde' };
+        feed.innerHTML += `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full ${inv.status === 'bezahlt' ? 'bg-bamou' : 'bg-amber-400'}"></span>
+              <span class="font-medium text-slate-800">${inv.id} (${cust.name})</span>
+            </div>
+            <span class="font-mono text-slate-500">€ ${inv.amount.toLocaleString('de-DE')}</span>
+          </div>
+        `;
+      });
+
+      // Customers
+      const custGrid = document.getElementById('customersGrid');
+      custGrid.innerHTML = '';
+      const custSelect = document.getElementById('modalInvCustomer');
+      custSelect.innerHTML = '';
+
+      appData.customers.forEach(c => {
+        custSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+        custGrid.innerHTML += `
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-bold text-slate-900">${c.name}</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600">${c.uid}</span>
+              </div>
+              <p class="text-xs text-slate-400">${c.email}</p>
+            </div>
+            <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400">Offener Saldo:</span>
+              <span class="font-mono font-bold ${c.balance > 0 ? 'text-amber-600' : 'text-slate-900'}">€ ${c.balance.toLocaleString('de-DE')}</span>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById('badge-customers').innerText = appData.customers.length;
+
+      // Time Entries
+      const timeBody = document.getElementById('timeTableBody');
+      timeBody.innerHTML = '';
+      appData.timeEntries.forEach(t => {
+        timeBody.innerHTML += `
+          <tr class="hover:bg-slate-50/60">
+            <td class="py-2.5 px-4 text-slate-500">${t.date}</td>
+            <td class="py-2.5 px-4 font-sans font-medium text-slate-800">${t.project}</td>
+            <td class="py-2.5 px-4 font-sans text-slate-600">${t.desc}</td>
+            <td class="py-2.5 px-4 text-right">${t.hours} h</td>
+            <td class="py-2.5 px-4 text-right font-bold text-slate-900">€ ${(t.hours * t.rate).toLocaleString('de-DE', {minimumFractionDigits: 2})}</td>
+          </tr>
+        `;
+      });
+
+      lucide.createIcons();
+    }
+
+    // Toggle Invoice Paid
+    function toggleInvoicePaid(id) {
+      const inv = appData.invoices.find(i => i.id === id);
+      if (inv) {
+        inv.status = inv.status === 'bezahlt' ? 'offen' : 'bezahlt';
+        saveState();
+        showToast(`Rechnung ${id} status geändert auf: ${inv.status}`);
+      }
+    }
+
+    // Preview Invoice
+    function previewInvoice(id) {
+      const inv = appData.invoices.find(i => i.id === id);
+      const cust = appData.customers.find(c => c.id === inv.customerId);
+      if (!inv || !cust) return;
+
+      document.getElementById('printNumber').innerText = inv.id;
+      document.getElementById('printDate').innerText = 'Datum: ' + inv.date;
+      document.getElementById('printCustomer').innerText = cust.name;
+      document.getElementById('printCustomerUid').innerText = 'UID: ' + cust.uid;
+      document.getElementById('printDesc').innerText = inv.desc;
+      document.getElementById('printNet').innerText = '€ ' + inv.amount.toLocaleString('de-DE', {minimumFractionDigits: 2});
+      document.getElementById('printTax').innerText = '€ ' + (inv.amount * 0.2).toLocaleString('de-DE', {minimumFractionDigits: 2});
+      document.getElementById('printGross').innerText = '€ ' + (inv.amount * 1.2).toLocaleString('de-DE', {minimumFractionDigits: 2});
+
+      openModal('invoicePrintModal');
+    }
+
+    // Save Invoice
+    function saveInvoice() {
+      const custId = parseInt(document.getElementById('modalInvCustomer').value);
+      const desc = document.getElementById('modalInvDesc').value || 'Dienstleistung';
+      const amount = parseFloat(document.getElementById('modalInvAmount').value) || 1000;
+      const terms = parseInt(document.getElementById('modalInvTerms').value);
+
+      const nextNum = 'RE-2026-00' + (appData.invoices.length + 1);
+      const today = new Date().toISOString().split('T')[0];
+      const dueDate = new Date(Date.now() + terms * 86400000).toISOString().split('T')[0];
+
+      appData.invoices.unshift({
+        id: nextNum,
+        customerId: custId,
+        date: today,
+        due: dueDate,
+        desc: desc,
+        amount: amount,
+        status: 'offen'
+      });
+
+      saveState();
+      closeModal('invoiceModal');
+      showToast(`${nextNum} erfolgreich erstellt!`);
+    }
+
+    // Save Customer
+    function saveCustomer() {
+      const name = document.getElementById('custName').value;
+      const email = document.getElementById('custEmail').value;
+      const uid = document.getElementById('custUid').value || 'ATU00000000';
+
+      if (!name) return;
+      appData.customers.push({
+        id: Date.now(),
+        name,
+        email,
+        uid,
+        balance: 0
+      });
+
+      saveState();
+      closeModal('customerModal');
+      showToast(`${name} als Kunde angelegt!`);
+    }
+
+    // Add Time Entry
+    function addManualTime() {
+      const desc = document.getElementById('timeEntryDesc').value || 'Entwicklung & Beratung';
+      const proj = document.getElementById('timeEntryProject').value;
+      const hours = parseFloat(document.getElementById('timeEntryHours').value) || 1.0;
+
+      appData.timeEntries.unshift({
+        id: Date.now(),
+        date: "23.09.2026",
+        project: proj,
+        desc: desc,
+        hours: hours,
+        rate: 140
+      });
+
+      saveState();
+      showToast(`${hours} h auf ${proj} gebucht!`);
+      document.getElementById('timeEntryDesc').value = '';
+      document.getElementById('timeEntryHours').value = '';
+    }
+
+    // Export BMD CSV
+    function exportBMD() {
+      let csv = "Konto;Gegenkonto;Belegnummer;Datum;Betrag_Netto;Steuersatz;USt_Betrag;Text\n";
+      appData.invoices.forEach(inv => {
+        const cust = appData.customers.find(c => c.id === inv.customerId);
+        csv += `4000;20000;${inv.id};${inv.date};${inv.amount.toFixed(2)};20;${(inv.amount*0.2).toFixed(2)};${cust.name} - ${inv.desc}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "BMD_Export_Fintaro_20260923.csv";
+      link.click();
+      showToast("BMD CSV Export erfolgreich heruntergeladen!");
+    }
+
+    // Sidebar Live Timer Demo
+    let timerSec = 872;
+    let timerInterval = setInterval(() => {
+      timerSec++;
+      const h = String(Math.floor(timerSec / 3600)).padStart(2, '0');
+      const m = String(Math.floor((timerSec % 3600) / 60)).padStart(2, '0');
+      const s = String(timerSec % 60).padStart(2, '0');
+      document.getElementById('sidebarTimerDisplay').innerText = `${h}:${m}:${s}`;
+    }, 1000);
+
+    function toggleSidebarTimer() {
+      const btn = document.getElementById('sidebarTimerBtn');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.innerText = "Starten";
+        showToast("Zeiterfassung pausiert.");
+      } else {
+        timerInterval = setInterval(() => { timerSec++; }, 1000);
+        btn.innerText = "Stopp";
+        showToast("Zeiterfassung läuft weiter.");
+      }
+    }
+
+    // Init Chart.js
+    window.onload = function() {
+      renderAll();
+      const ctx = document.getElementById('revenueChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep'],
+          datasets: [
+            {
+              label: 'Umsatz Netto (€)',
+              data: [14200, 18900, 22400, 19800, 24100, 28450],
+              backgroundColor: '#4fc17e',
+              borderRadius: 8
+            },
+            {
+              label: 'Projektstunden (h)',
+              data: [85, 110, 135, 120, 140, 142],
+              backgroundColor: '#e2e8f0',
+              borderRadius: 8
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: '#f1f5f9' } }
+          }
+        }
+      });
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-[#fdfaf8] text-slate-800">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhaseFit · Cycle-Synced Training & Wellness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            phase: {
+              menstrual: '#e11d48',
+              follicular: '#059669',
+              ovulatory: '#d97706',
+              luteal: '#7c3aed',
+              cream: '#fdfaf8',
+              card: '#ffffff',
+              border: '#f3ece6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-full flex flex-col font-sans bg-[#fbf8f5] text-slate-800 antialiased selection:bg-rose-200">
+
+  <!-- Toast Container -->
+  <div id="toastArea" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Mobile App Frame Container -->
+  <div class="max-w-md w-full mx-auto min-h-screen bg-white shadow-2xl border-x border-[#f0e8e2] flex flex-col justify-between relative overflow-hidden">
+    
+    <!-- Top Header -->
+    <header class="p-6 pb-4 border-b border-[#f3ece6] bg-white/80 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-amber-300 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+          PF
+        </div>
+        <div>
+          <h1 class="font-serif italic font-bold text-lg text-slate-900 leading-none">PhaseFit</h1>
+          <p class="text-[10px] uppercase font-semibold tracking-wider text-rose-500 mt-0.5">Cycle Intelligence</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs px-2.5 py-1 rounded-full font-medium bg-rose-50 text-rose-600 border border-rose-100 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+          Tag 14 · Eisprung
+        </span>
+      </div>
+    </header>
+
+    <!-- App Body Content -->
+    <main class="flex-1 p-6 space-y-6 overflow-y-auto">
+      
+      <!-- Interactive Cycle Phase Wheel Card -->
+      <div class="rounded-3xl p-6 bg-gradient-to-br from-[#fff7f5] via-white to-[#fbf5f2] border border-[#f3ece6] shadow-sm text-center relative">
+        <p class="text-[11px] font-semibold uppercase tracking-wider text-amber-600 mb-1">Aktuelle Zyklusphase</p>
+        <h2 class="font-serif text-2xl font-bold text-slate-900">Ovulationsphase (Eisprung)</h2>
+        <p class="text-xs text-slate-500 mt-1">Östrogen & Testosteron am Peak · Maximale Energie & Kraft</p>
+
+        <!-- Phase Selector Pills -->
+        <div class="grid grid-cols-4 gap-1.5 mt-5 p-1 bg-slate-100/70 rounded-2xl">
+          <button onclick="setPhase('menstrual')" id="pbtn-menstrual" class="phase-btn py-1.5 text-[11px] font-medium rounded-xl text-slate-500 hover:text-slate-800 transition-all">Menstruell</button>
+          <button onclick="setPhase('follicular')" id="pbtn-follicular" class="phase-btn py-1.5 text-[11px] font-medium rounded-xl text-slate-500 hover:text-slate-800 transition-all">Follikel</button>
+          <button onclick="setPhase('ovulatory')" id="pbtn-ovulatory" class="phase-btn py-1.5 text-[11px] font-bold rounded-xl bg-white text-slate-900 shadow-sm transition-all">Ovulation</button>
+          <button onclick="setPhase('luteal')" id="pbtn-luteal" class="phase-btn py-1.5 text-[11px] font-medium rounded-xl text-slate-500 hover:text-slate-800 transition-all">Luteal</button>
+        </div>
+      </div>
+
+      <!-- Workout of the Day (Dynamically synced to phase) -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+            <i data-lucide="dumbbell" class="w-4 h-4 text-rose-500"></i>
+            <span>Trainingsempfehlung</span>
+          </h3>
+          <span class="text-xs text-slate-400 font-mono">35 Min</span>
+        </div>
+
+        <div id="workoutCard" class="rounded-2xl p-5 bg-white border border-[#f3ece6] shadow-sm space-y-3">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 text-amber-700" id="workoutTag">High Intensity · Kraft</span>
+              <h4 class="font-bold text-slate-900 text-base mt-2" id="workoutTitle">Peak Strength & PR Session</h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed" id="workoutDesc">
+                Nutze dein Östrogenhoch für schwere Kniebeugen, Kreuzheben und dynamische Intervalle. Dein Körper baut jetzt am schnellsten Muskeln auf.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-2">
+            <button onclick="startWorkout()" class="flex-1 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+              <i data-lucide="play" class="w-3.5 h-3.5 fill-white"></i>
+              <span>Workout starten</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nutrition & Micronutrients -->
+      <div class="space-y-3">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600"></i>
+          <span>Ernährung & Mikronährstoffe</span>
+        </h3>
+
+        <div id="nutritionCard" class="rounded-2xl p-4 bg-white border border-[#f3ece6] shadow-sm space-y-2 text-xs">
+          <div class="flex items-center gap-2 text-slate-800 font-semibold">
+            <i data-lucide="apple" class="w-4 h-4 text-emerald-500"></i>
+            <span id="nutritionFocus">Fokus: Antioxidantien, Ballaststoffe & Zink</span>
+          </div>
+          <p class="text-slate-500 leading-relaxed" id="nutritionAdvice">
+            Leichte, frische Kost mit Beeren, grünem Blattgemüse und Sesamsamen zur Unterstützung des Östrogenstoffwechsels der Leber.
+          </p>
+        </div>
+      </div>
+
+      <!-- Daily Symptom / Mood Logger -->
+      <div class="space-y-3">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+          <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i>
+          <span>Heutiges Wohlbefinden loggen</span>
+        </h3>
+
+        <div class="flex flex-wrap gap-2">
+          <button onclick="logSymptom('Voller Fokus')" class="log-btn px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 transition-colors border border-slate-200/80">⚡ Voller Fokus</button>
+          <button onclick="logSymptom('Kraftvoll')" class="log-btn px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 transition-colors border border-slate-200/80">💪 Kraftvoll</button>
+          <button onclick="logSymptom('Entspannt')" class="log-btn px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 transition-colors border border-slate-200/80">🌿 Entspannt</button>
+          <button onclick="logSymptom('Leicht müde')" class="log-btn px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 transition-colors border border-slate-200/80">😴 Leicht müde</button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="p-3 px-6 border-t border-[#f3ece6] bg-white flex justify-around text-slate-400">
+      <button class="flex flex-col items-center gap-1 text-rose-500 font-semibold text-[10px]">
+        <i data-lucide="calendar" class="w-5 h-5"></i>
+        <span>Heute</span>
+      </button>
+      <button onclick="showToast('Workout-Bibliothek geöffnet')" class="flex flex-col items-center gap-1 hover:text-slate-700 text-[10px]">
+        <i data-lucide="activity" class="w-5 h-5"></i>
+        <span>Training</span>
+      </button>
+      <button onclick="showToast('Ernährungsplan geöffnet')" class="flex flex-col items-center gap-1 hover:text-slate-700 text-[10px]">
+        <i data-lucide="salad" class="w-5 h-5"></i>
+        <span>Food</span>
+      </button>
+      <button onclick="showToast('Profil & Zykluslänge')" class="flex flex-col items-center gap-1 hover:text-slate-700 text-[10px]">
+        <i data-lucide="user" class="w-5 h-5"></i>
+        <span>Profil</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script>
+    const PHASES = {
+      menstrual: {
+        title: "Menstruationsphase (Tage 1-5)",
+        subtitle: "Niedrige Hormonlevel · Erholung & sanfte Bewegung",
+        tag: "Restorative · Mobility",
+        workout: "Gentle Flow & Spine Mobility",
+        desc: "Sanftes Dehnen, Spaziergänge und Atemübungen. Schone deinen Körper und erlaube dir Entschleunigung.",
+        nutrition: "Fokus: Eisen, Magnesium & Wärme",
+        food: "Warme Eintöpfe, Knochenbrühe oder Linsencurry mit Spinat und Kürbiskernen (Seed Cycling Phase 1)."
+      },
+      follicular: {
+        title: "Follikelphase (Tage 6-11)",
+        subtitle: "Steigendes Östrogen · Frische Energie & Neugier",
+        tag: "Aufbau & Cardio",
+        workout: "Dynamic HIIT & Full-Body Strength",
+        desc: "Perfekte Zeit für neue Bewegungsabläufe, progressives Krafttraining und lockere Laufeinheiten.",
+        nutrition: "Fokus: Komplexe Kohlenhydrate & Proteine",
+        food: "Fermentierte Lebensmittel, Kürbiskerne, Leinsamen und viel frisches Gemüse."
+      },
+      ovulatory: {
+        title: "Ovulationsphase (Tage 12-16)",
+        subtitle: "Östrogen & Testosteron am Peak · Maximale Kraft",
+        tag: "High Intensity · Kraft",
+        workout: "Peak Strength & PR Session",
+        desc: "Nutze dein hormonelles Hoch für schwere Kniebeugen, Kreuzheben und dynamische Intervalle.",
+        nutrition: "Fokus: Antioxidantien, Ballaststoffe & Zink",
+        food: "Leichte, frische Kost mit Beeren, grünem Blattgemüse und Sesamsamen."
+      },
+      luteal: {
+        title: "Lutealphase (Tage 17-28)",
+        subtitle: "Progesteron dominiert · Fokus auf Ausdauer & Ruhe",
+        tag: "Pilates & Kraftausdauer",
+        workout: "Reformer Pilates & Core Control",
+        desc: "Konzentriere dich auf kontrollierte, langsame Wiederholungen, Stabilität und reduziere übermäßigen Stress.",
+        nutrition: "Fokus: B-Vitamine, gesunde Fette & Kakaobohnen",
+        food: "Süßkartoffeln, brauner Reis, Sonnenblumenkerne (Seed Cycling Phase 2) und Zartbitterschokolade."
+      }
+    };
+
+    function setPhase(key) {
+      const data = PHASES[key];
+      if (!data) return;
+
+      document.querySelectorAll('.phase-btn').forEach(btn => {
+        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold');
+        btn.classList.add('text-slate-500', 'font-medium');
+      });
+
+      const activeBtn = document.getElementById('pbtn-' + key);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-500', 'font-medium');
+        activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold');
+      }
+
+      document.getElementById('workoutTag').innerText = data.tag;
+      document.getElementById('workoutTitle').innerText = data.workout;
+      document.getElementById('workoutDesc').innerText = data.desc;
+      document.getElementById('nutritionFocus').innerText = data.nutrition;
+      document.getElementById('nutritionAdvice').innerText = data.food;
+
+      showToast(`Phase gewechselt: ${data.title}`);
+    }
+
+    function logSymptom(name) {
+      showToast(`Eintrag geloggt: ${name} ✓`);
+    }
+
+    function startWorkout() {
+      showToast("Training gestartet! Musik-Playlist geladen 🎧");
+    }
+
+    function showToast(msg) {
+      const area = document.getElementById('toastArea');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-lg shadow-rose-900/10 flex items-center gap-2 transform translate-y-2 opacity-0 transition-all";
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span><span>${msg}</span>`;
+      area.appendChild(toast);
+      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 250);
+      }, 2400);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

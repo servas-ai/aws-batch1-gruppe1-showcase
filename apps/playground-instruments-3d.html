@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-[#0d0e12] text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground Instruments · The Hybrid Typing & Music Synth</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            synth: {
+              orange: '#ff6b35',
+              orangeHover: '#f0551c',
+              dark: '#090a0e',
+              card: '#13151b',
+              border: '#202430'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-full flex flex-col font-sans bg-[#090a0e] text-slate-100 selection:bg-synth-orange selection:text-black">
+
+  <div id="toastArea" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="border-b border-synth-border bg-[#090a0e]/80 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-xl bg-synth-orange flex items-center justify-center text-black font-extrabold text-sm shadow-md shadow-synth-orange/20">
+          PI
+        </div>
+        <div>
+          <span class="font-display font-bold text-lg text-white">Playground Instruments</span>
+          <span class="ml-2 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-synth-orange/10 text-synth-orange border border-synth-orange/30">Graz · Rising Star</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-400">
+        <a href="#synth-canvas" class="hover:text-white transition-colors">3D Experience</a>
+        <a href="#story" class="hover:text-white transition-colors">Gründerstory</a>
+        <a href="#specs" class="hover:text-white transition-colors">Hardware & MIDI</a>
+      </nav>
+
+      <button onclick="showToast('Pre-Order Call eröffnet in Kürze!')" class="bg-synth-orange hover:bg-synth-orangeHover text-black font-extrabold px-4 py-2 rounded-xl text-xs transition-all shadow-md shadow-synth-orange/20 active:scale-95">
+        Join Waitlist
+      </button>
+
+    </div>
+  </header>
+
+  <!-- Hero & 3D Interactive Synthesizer -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-6 space-y-12">
+    
+    <div class="text-center max-w-3xl mx-auto pt-8 space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-synth-card border border-synth-border text-xs font-mono text-synth-orange">
+        <span>Tippen & Komponieren in einem Gerät</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-display font-bold text-white leading-tight">
+        Die Tastatur für Code, Text <br/>
+        <span class="text-synth-orange">& Studio-Musikproduktion.</span>
+      </h1>
+      <p class="text-slate-400 text-sm leading-relaxed">
+        Entwickelt von Stefan Baumgartner, Dominik Sabathy & Aron Petritz in Graz. Die weltweit erste nahtlose Verschmelzung einer mechanischen QWERTY-Tastatur mit einem echten Synthesizer & MIDI-Controller.
+      </p>
+    </div>
+
+    <!-- 3D Model & Playable Audio Synthesizer Studio -->
+    <div class="relative rounded-3xl bg-[#13151b] border border-synth-border overflow-hidden shadow-2xl">
+      
+      <!-- Studio Top Controls -->
+      <div class="absolute top-4 left-4 z-20 flex items-center gap-3 bg-black/70 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 text-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-synth-orange animate-pulse"></span>
+        <span class="text-slate-300 font-mono font-medium">3D Modell · Live spielbar mit Tastatur & Maus!</span>
+      </div>
+
+      <!-- Preset Selector -->
+      <div class="absolute top-4 right-4 z-20 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs">
+        <span class="text-slate-400 font-mono text-[11px]">Sound Preset:</span>
+        <select id="presetSelect" onchange="changePreset()" class="bg-black text-synth-orange font-bold text-xs outline-none cursor-pointer">
+          <option value="saw">80s Synthwave Lead</option>
+          <option value="sine">Lo-Fi Dream Pluck</option>
+          <option value="square">Cyber Chiptune Bass</option>
+        </select>
+      </div>
+
+      <!-- 3D Canvas -->
+      <div id="synthCanvasContainer" class="w-full h-[480px] cursor-grab active:cursor-grabbing"></div>
+
+      <!-- On-Screen Playable Piano Keys (Interactive Web Audio API) -->
+      <div class="p-6 bg-[#0e0f14] border-t border-synth-border">
+        <div class="flex items-center justify-between mb-3 text-xs">
+          <span class="text-slate-400 font-mono">25-Key Velocity Sensitives Keyboard: Klicke auf die Tasten zum Spielen</span>
+          <span class="text-[11px] font-mono text-synth-orange">Tastatur-Shortcut: Tasten A-K spielen Töne</span>
+        </div>
+
+        <!-- Virtual Piano Keyboard -->
+        <div class="flex justify-center relative select-none overflow-x-auto py-2">
+          <div class="flex relative bg-black p-2 rounded-2xl border border-synth-border shadow-inner">
+            
+            <!-- White Keys -->
+            <button onmousedown="playNote(261.63)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">C</button>
+            <button onmousedown="playNote(293.66)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">D</button>
+            <button onmousedown="playNote(329.63)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">E</button>
+            <button onmousedown="playNote(349.23)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">F</button>
+            <button onmousedown="playNote(392.00)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">G</button>
+            <button onmousedown="playNote(440.00)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">A</button>
+            <button onmousedown="playNote(493.88)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg border-r border-slate-300 active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">B</button>
+            <button onmousedown="playNote(523.25)" class="piano-key w-10 h-32 bg-white text-slate-800 hover:bg-slate-200 rounded-b-lg active:bg-synth-orange font-mono text-[10px] flex items-end justify-center pb-2 transition-colors">C5</button>
+
+            <!-- Black Keys (Absolute positioned) -->
+            <button onmousedown="playNote(277.18)" class="piano-key absolute left-9 top-2 w-6 h-20 bg-[#151518] text-white hover:bg-slate-700 rounded-b border-b-2 border-synth-orange active:bg-synth-orange transition-colors"></button>
+            <button onmousedown="playNote(311.13)" class="piano-key absolute left-19 top-2 w-6 h-20 bg-[#151518] text-white hover:bg-slate-700 rounded-b border-b-2 border-synth-orange active:bg-synth-orange transition-colors" style="left: 76px"></button>
+            <button onmousedown="playNote(369.99)" class="piano-key absolute left-39 top-2 w-6 h-20 bg-[#151518] text-white hover:bg-slate-700 rounded-b border-b-2 border-synth-orange active:bg-synth-orange transition-colors" style="left: 156px"></button>
+            <button onmousedown="playNote(415.30)" class="piano-key absolute left-49 top-2 w-6 h-20 bg-[#151518] text-white hover:bg-slate-700 rounded-b border-b-2 border-synth-orange active:bg-synth-orange transition-colors" style="left: 196px"></button>
+            <button onmousedown="playNote(466.16)" class="piano-key absolute left-59 top-2 w-6 h-20 bg-[#151518] text-white hover:bg-slate-700 rounded-b border-b-2 border-synth-orange active:bg-synth-orange transition-colors" style="left: 236px"></button>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Team & Origin Section -->
+    <div id="story" class="p-8 rounded-3xl bg-[#13151b] border border-synth-border grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4">
+        <span class="text-xs font-mono uppercase text-synth-orange font-bold">Origin Story · Graz</span>
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">Vom Unicorn Graz zum aws First Incubator</h2>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Das Gründerteam (Stefan Baumgartner, Dominik Sabathy und Aron Petritz) gewann bei der 25. Gründungsgarage den renommierten Publikumspreis „Rising Star Award“. 
+        </p>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Im Startup-Hub „Unicorn“ an der Universität Graz entwickelte das Team den ersten Prototypen (ehemals unter dem Projektnamen <em>Organic I</em>), der es Musikschaffenden ermöglicht, ohne Umgreifen zwischen Programmcode/Lyrics und Melodie-Harmonien zu wechseln.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 text-xs">
+        <div class="p-4 rounded-2xl bg-black/40 border border-synth-border space-y-1">
+          <p class="text-slate-500 font-mono">Status</p>
+          <p class="text-white font-bold text-sm">Hardware Prototyp v2</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-black/40 border border-synth-border space-y-1">
+          <p class="text-slate-500 font-mono">Gründerteam</p>
+          <p class="text-white font-bold text-sm">Stefan, Dominik, Aron</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-black/40 border border-synth-border space-y-1">
+          <p class="text-slate-500 font-mono">Inkubator</p>
+          <p class="text-white font-bold text-sm">aws First Batch 1</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-black/40 border border-synth-border space-y-1">
+          <p class="text-slate-500 font-mono">Anschluss</p>
+          <p class="text-white font-bold text-sm">USB-C MIDI + HID</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- WEB AUDIO API SYNTHESIZER ENGINE & THREE.JS SCRIPT -->
+  <script>
+    // 1. WEB AUDIO API SYNTHESIZER
+    let audioCtx = null;
+    let currentWave = 'sawtooth';
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playNote(freq) {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      osc.type = currentWave;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      // Low Pass Filter for warm synth character
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+
+      // Envelope ADSR
+      const now = audioCtx.currentTime;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.35, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.85);
+
+      // Trigger 3D pulse
+      if (synthBodyMesh) {
+        synthBodyMesh.material.emissive.setHex(0x331505);
+        setTimeout(() => synthBodyMesh.material.emissive.setHex(0x000000), 120);
+      }
+    }
+
+    function changePreset() {
+      const val = document.getElementById('presetSelect').value;
+      if (val === 'saw') currentWave = 'sawtooth';
+      else if (val === 'sine') currentWave = 'sine';
+      else if (val === 'square') currentWave = 'square';
+      showToast(`Synth Preset geändert: ${val.toUpperCase()}`);
+    }
+
+    // Keyboard Shortcuts (A-K)
+    const KEY_MAP = {
+      'a': 261.63, 'w': 277.18, 's': 293.66, 'e': 311.13, 'd': 329.63,
+      'f': 349.23, 't': 369.99, 'g': 392.00, 'z': 415.30, 'y': 415.30,
+      'h': 440.00, 'u': 466.16, 'j': 493.88, 'k': 523.25
+    };
+
+    window.addEventListener('keydown', (e) => {
+      if (KEY_MAP[e.key.toLowerCase()]) {
+        playNote(KEY_MAP[e.key.toLowerCase()]);
+      }
+    });
+
+    // 2. THREE.JS 3D SCENE
+    let scene, camera, renderer, controls;
+    let synthBodyMesh;
+
+    function init3D() {
+      const container = document.getElementById('synthCanvasContainer');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x13151b);
+
+      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+      camera.position.set(0, 3.5, 4.5);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2.1;
+
+      // Lighting
+      const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambient);
+
+      const spot = new THREE.SpotLight(0xff6b35, 3.5);
+      spot.position.set(2, 6, 3);
+      scene.add(spot);
+
+      const blueRim = new THREE.DirectionalLight(0x00f2fe, 1.2);
+      blueRim.position.set(-4, 2, -2);
+      scene.add(blueRim);
+
+      // Build 3D Synthesizer/Keyboard Model
+      const synthGroup = new THREE.Group();
+
+      // Main Chassis
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x181a22, roughness: 0.3, metalness: 0.8 });
+      synthBodyMesh = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.25, 2.0), bodyMat);
+      synthGroup.add(synthBodyMesh);
+
+      // Mechanical Typing Section (Top Half)
+      const keycapMat = new THREE.MeshStandardMaterial({ color: 0x2b2e3b, roughness: 0.5 });
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 12; c++) {
+          const cap = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.1, 0.18), keycapMat);
+          cap.position.set(-1.3 + c * 0.24, 0.16, -0.65 + r * 0.22);
+          synthGroup.add(cap);
+        }
+      }
+
+      // 25-Key Piano Section (Bottom Half)
+      const whiteMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f7, roughness: 0.2 });
+      const blackMat = new THREE.MeshStandardMaterial({ color: 0x111114, roughness: 0.1 });
+
+      for (let i = 0; i < 15; i++) {
+        const wkey = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.08, 0.75), whiteMat);
+        wkey.position.set(-1.4 + i * 0.21, 0.15, 0.45);
+        synthGroup.add(wkey);
+
+        // Black keys
+        if (![2, 6, 9, 13].includes(i) && i < 14) {
+          const bkey = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.45), blackMat);
+          bkey.position.set(-1.4 + i * 0.21 + 0.105, 0.22, 0.35);
+          synthGroup.add(bkey);
+        }
+      }
+
+      // Rotary Knobs (Top Right)
+      const knobMat = new THREE.MeshStandardMaterial({ color: 0xff6b35, metalness: 0.9, roughness: 0.2 });
+      for (let k = 0; k < 4; k++) {
+        const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.1, 16), knobMat);
+        knob.position.set(1.4, 0.18, -0.65 + k * 0.25);
+        synthGroup.add(knob);
+      }
+
+      scene.add(synthGroup);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        synthGroup.rotation.y = Math.sin(Date.now() * 0.0005) * 0.08;
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+
+    function showToast(msg) {
+      const area = document.getElementById('toastArea');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto px-4 py-2 rounded-xl bg-synth-card border border-synth-orange/50 text-xs font-semibold text-white shadow-xl shadow-synth-orange/10 flex items-center gap-2 transform translate-y-2 opacity-0 transition-all";
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-synth-orange"></span><span>${msg}</span>`;
+      area.appendChild(toast);
+      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 250);
+      }, 2500);
+    }
+
+    window.onload = () => {
+      init3D();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>

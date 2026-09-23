@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-[#0c0c0e] text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAMONT · Der smarte Luxus-Walltrainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+          },
+          colors: {
+            vamont: {
+              gold: '#d4af37',
+              goldHover: '#c19d28',
+              card: '#141418',
+              border: '#23232b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-full flex flex-col font-sans bg-[#0c0c0e] text-slate-100 selection:bg-vamont-gold selection:text-black">
+
+  <!-- Toast Container -->
+  <div id="toastArea" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="border-b border-vamont-border bg-[#0c0c0e]/80 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="font-serif tracking-widest text-2xl font-bold text-white uppercase">VAMONT</span>
+        <span class="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-vamont-gold/10 text-vamont-gold border border-vamont-gold/30">Walltrainer</span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-xs uppercase tracking-widest text-slate-400">
+        <a href="#3d-config" class="hover:text-white transition-colors">3D Konfigurator</a>
+        <a href="#hotel-b2b" class="hover:text-white transition-colors">Hotels & Chalets</a>
+        <a href="#physio" class="hover:text-white transition-colors">Physio & Rehab</a>
+      </nav>
+
+      <button onclick="openInquiry()" class="bg-gradient-to-r from-vamont-gold to-[#f3e5ab] hover:opacity-90 text-black font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-md shadow-vamont-gold/20 active:scale-95">
+        Anfrage stellen
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero & 3D Interactive Studio -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-6 space-y-12">
+    
+    <!-- Hero Header -->
+    <div class="text-center max-w-2xl mx-auto pt-8 space-y-4">
+      <p class="text-xs font-mono uppercase tracking-widest text-vamont-gold">Smartes Krafttraining · Minimaler Raum</p>
+      <h1 class="text-4xl sm:text-6xl font-serif font-bold text-white leading-tight">
+        Wenn Handwerkskunst auf Biomechanik trifft.
+      </h1>
+      <p class="text-slate-400 text-sm leading-relaxed">
+        Über 50 geführte Übungen für Rücken, Brust, Schultern und Beine. Nahtlos montiert an der Wand Ihres Penthouses, Chalets oder Boutique-Hotels.
+      </p>
+    </div>
+
+    <!-- 3D Model Canvas & Live Studio -->
+    <div class="relative rounded-3xl bg-[#121217] border border-vamont-border overflow-hidden shadow-2xl">
+      
+      <!-- Studio Header Controls -->
+      <div class="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs text-slate-300">
+        <i data-lucide="orbit" class="w-4 h-4 text-vamont-gold animate-spin" style="animation-duration: 8s"></i>
+        <span>3D Ansicht: Klicken & Ziehen zum Drehen · Scrollen zum Zoomen</span>
+      </div>
+
+      <!-- Quick Action: Cable Pull Simulation -->
+      <div class="absolute top-4 right-4 z-20 flex gap-2">
+        <button onclick="pullCables()" id="cableBtn" class="bg-black/70 hover:bg-black text-white border border-vamont-gold/40 px-3 py-2 rounded-xl text-xs font-medium backdrop-blur-md transition-all flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="move-vertical" class="w-3.5 h-3.5 text-vamont-gold"></i>
+          <span>Kabelzug testen</span>
+        </button>
+        <button onclick="reset3DCamera()" class="bg-black/70 hover:bg-black text-slate-300 px-3 py-2 rounded-xl text-xs border border-white/10 backdrop-blur-md">
+          Reset View
+        </button>
+      </div>
+
+      <!-- The 3D Canvas -->
+      <div id="canvas3dContainer" class="w-full h-[520px] cursor-grab active:cursor-grabbing"></div>
+
+      <!-- Material / Finish Switcher Bottom Bar -->
+      <div class="p-5 bg-[#0f0f13] border-t border-vamont-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="text-[11px] font-mono uppercase text-slate-400">Oberflächen-Finish:</span>
+          <p class="font-bold text-white text-sm" id="finishName">Amerikanischer Nussbaum (Walnut)</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="setWoodFinish('walnut', 'Amerikanischer Nussbaum (Walnut)', 0x4a2e1b)" class="finish-pill px-4 py-2 rounded-xl bg-black border-2 border-vamont-gold text-xs font-semibold flex items-center gap-2 transition-all">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#4a2e1b]"></span>
+            <span>Nussbaum</span>
+          </button>
+          <button onclick="setWoodFinish('oak', 'Eiche Natur (Natural Oak)', 0xb8976c)" class="finish-pill px-4 py-2 rounded-xl bg-black border border-vamont-border text-xs font-semibold flex items-center gap-2 transition-all">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#b8976c]"></span>
+            <span>Eiche Natur</span>
+          </button>
+          <button onclick="setWoodFinish('black', 'Matte Carbon Black', 0x1a1a1e)" class="finish-pill px-4 py-2 rounded-xl bg-black border border-vamont-border text-xs font-semibold flex items-center gap-2 transition-all">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#1a1a1e] border border-slate-700"></span>
+            <span>Carbon Black</span>
+          </button>
+        </div>
+
+        <div class="font-mono text-sm text-right">
+          <span class="text-xs text-slate-400 block">Ab Werk</span>
+          <span class="font-extrabold text-white text-lg">€ 2.890,00</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+      <div class="p-6 rounded-2xl bg-[#121217] border border-vamont-border space-y-3">
+        <i data-lucide="maximize-2" class="w-6 h-6 text-vamont-gold"></i>
+        <h3 class="font-serif text-lg font-bold text-white">0,3 m² Wandfläche</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Ersetzt voluminöse Krafttürme und Hantelbänke vollständig. Schließt bei Nichtbenutzung bündig und elegant mit der Wand ab.</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-[#121217] border border-vamont-border space-y-3">
+        <i data-lucide="gauge" class="w-6 h-6 text-vamont-gold"></i>
+        <h3 class="font-serif text-lg font-bold text-white">Stufenloser Widerstand</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Präzise Gewichtssimulation von 1,5 kg bis 75 kg pro Arm – ideal sowohl für gelenkschonende Rehabilitation als auch Maximalkrafttraining.</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-[#121217] border border-vamont-border space-y-3">
+        <i data-lucide="hotel" class="w-6 h-6 text-vamont-gold"></i>
+        <h3 class="font-serif text-lg font-bold text-white">B2B Hotel & Chalet Edition</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Perfekt für Luxushotels und Premium-Suiten. Flüsterleise Riemenführung ohne klappernde Gewichtsscheiben.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Inquiry Modal -->
+  <div id="inquiryModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#141418] border border-vamont-border rounded-2xl max-w-md w-full p-6 space-y-4 text-xs">
+      <div class="flex justify-between items-center pb-3 border-b border-vamont-border">
+        <h3 class="font-serif text-lg font-bold text-white">VAMONT Walltrainer anfragen</h3>
+        <button onclick="closeInquiry()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div>
+        <label class="block text-slate-400 mb-1">Ihr Name / Unternehmen</label>
+        <input type="text" placeholder="z. B. Alpine Boutique Chalets" class="w-full bg-black/50 border border-vamont-border rounded-xl p-2.5 text-white outline-none focus:border-vamont-gold">
+      </div>
+      <div>
+        <label class="block text-slate-400 mb-1">E-Mail</label>
+        <input type="email" placeholder="contact@alpine-resort.at" class="w-full bg-black/50 border border-vamont-border rounded-xl p-2.5 text-white outline-none focus:border-vamont-gold">
+      </div>
+      <div>
+        <label class="block text-slate-400 mb-1">Einsatzbereich</label>
+        <select class="w-full bg-black/50 border border-vamont-border rounded-xl p-2.5 text-white outline-none focus:border-vamont-gold">
+          <option>Privates Penthouse / Home Gym</option>
+          <option>Hotel / Chalet Suite (B2B)</option>
+          <option>Physiotherapie / Sportklinik</option>
+        </select>
+      </div>
+      <button onclick="submitInquiry()" class="w-full py-3 rounded-xl bg-gradient-to-r from-vamont-gold to-[#f3e5ab] text-black font-extrabold uppercase tracking-wider">
+        Unverbindlich anfragen
+      </button>
+    </div>
+  </div>
+
+  <!-- THREE.JS 3D SCENE SCRIPT -->
+  <script>
+    let scene, camera, renderer, controls;
+    let walltrainerGroup, backboardMesh, leftHandle, rightHandle, leftCable, rightCable;
+    let isPulling = false;
+    let pullProgress = 0;
+
+    function init3D() {
+      const container = document.getElementById('canvas3dContainer');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      // Scene & Camera
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x121217);
+
+      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+      camera.position.set(0, 0, 5.5);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
+
+      // Controls
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 + 0.1;
+      controls.minDistance = 3;
+      controls.maxDistance = 8;
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      scene.add(ambientLight);
+
+      const spotLight = new THREE.SpotLight(0xffecd2, 2.5);
+      spotLight.position.set(5, 8, 5);
+      spotLight.angle = 0.6;
+      spotLight.penumbra = 0.8;
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      const rimLight = new THREE.DirectionalLight(0xd4af37, 1.2);
+      rimLight.position.set(-5, -2, -3);
+      scene.add(rimLight);
+
+      // Build 3D Walltrainer Procedural Geometry
+      walltrainerGroup = new THREE.Group();
+
+      // 1. Backing Wall Panel (Wood Veneer)
+      const woodGeo = new THREE.BoxGeometry(1.6, 2.8, 0.08);
+      const woodMat = new THREE.MeshStandardMaterial({
+        color: 0x4a2e1b, // Walnut default
+        roughness: 0.4,
+        metalness: 0.1
+      });
+      backboardMesh = new THREE.Mesh(woodGeo, woodMat);
+      backboardMesh.castShadow = true;
+      backboardMesh.receiveShadow = true;
+      walltrainerGroup.add(backboardMesh);
+
+      // 2. Anodized Aluminum Outer Frame
+      const frameMat = new THREE.MeshStandardMaterial({ color: 0x1f1f24, roughness: 0.2, metalness: 0.9 });
+      const frameLeft = new THREE.Mesh(new THREE.BoxGeometry(0.06, 2.84, 0.1), frameMat);
+      frameLeft.position.set(-0.82, 0, 0.01);
+      const frameRight = frameLeft.clone();
+      frameRight.position.x = 0.82;
+      walltrainerGroup.add(frameLeft, frameRight);
+
+      // 3. Central Digital Display / Resistance Knob
+      const knobMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.2 });
+      const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 32), knobMat);
+      knob.rotation.x = Math.PI / 2;
+      knob.position.set(0, 0.2, 0.06);
+      walltrainerGroup.add(knob);
+
+      // 4. Pulley Arms (Left & Right)
+      const armMat = new THREE.MeshStandardMaterial({ color: 0x222228, metalness: 0.8, roughness: 0.3 });
+      const armLeft = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.6, 0.12), armMat);
+      armLeft.position.set(-0.55, 0.9, 0.1);
+      const armRight = armLeft.clone();
+      armRight.position.x = 0.55;
+      walltrainerGroup.add(armLeft, armRight);
+
+      // 5. Handles & Steel Cables
+      const handleMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.95, roughness: 0.15 });
+      const handleGeo = new THREE.TorusGeometry(0.08, 0.018, 16, 32);
+
+      leftHandle = new THREE.Mesh(handleGeo, handleMat);
+      leftHandle.position.set(-0.55, 0.5, 0.3);
+      
+      rightHandle = leftHandle.clone();
+      rightHandle.position.x = 0.55;
+      walltrainerGroup.add(leftHandle, rightHandle);
+
+      scene.add(walltrainerGroup);
+
+      // Responsive Resize
+      window.addEventListener('resize', onWindowResize);
+      animate();
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('canvas3dContainer');
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Cable pull animation
+      if (isPulling) {
+        pullProgress += 0.05;
+        const offset = Math.sin(pullProgress) * 0.45;
+        leftHandle.position.z = 0.3 + Math.max(0, offset);
+        rightHandle.position.z = 0.3 + Math.max(0, offset);
+        leftHandle.position.y = 0.5 - Math.max(0, offset * 0.3);
+        rightHandle.position.y = 0.5 - Math.max(0, offset * 0.3);
+
+        if (pullProgress > Math.PI) {
+          isPulling = false;
+          pullProgress = 0;
+          leftHandle.position.set(-0.55, 0.5, 0.3);
+          rightHandle.position.set(0.55, 0.5, 0.3);
+          document.getElementById('cableBtn').classList.remove('border-vamont-gold', 'text-vamont-gold');
+        }
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // Material finish switcher
+    function setWoodFinish(key, name, hexColor) {
+      if (backboardMesh) {
+        backboardMesh.material.color.setHex(hexColor);
+      }
+      document.getElementById('finishName').innerText = name;
+
+      document.querySelectorAll('.finish-pill').forEach(btn => {
+        btn.classList.remove('border-2', 'border-vamont-gold');
+        btn.classList.add('border', 'border-vamont-border');
+      });
+      event.currentTarget.classList.remove('border-vamont-border');
+      event.currentTarget.classList.add('border-2', 'border-vamont-gold');
+
+      showToast(`3D Finish aktualisiert: ${name}`);
+    }
+
+    // Cable Pull Trigger
+    function pullCables() {
+      if (isPulling) return;
+      isPulling = true;
+      pullProgress = 0;
+      document.getElementById('cableBtn').classList.add('border-vamont-gold', 'text-vamont-gold');
+      showToast("Biomechanischer Kabelzug aktiv (2x 15kg Zugkraft simuliert)");
+    }
+
+    function reset3DCamera() {
+      camera.position.set(0, 0, 5.5);
+      controls.target.set(0, 0, 0);
+    }
+
+    // Modal
+    function openInquiry() { document.getElementById('inquiryModal').classList.remove('hidden'); }
+    function closeInquiry() { document.getElementById('inquiryModal').classList.add('hidden'); }
+    function submitInquiry() {
+      closeInquiry();
+      showToast("Vielen Dank! Das VAMONT-Team meldet sich innerhalb von 24h.");
+    }
+
+    function showToast(msg) {
+      const area = document.getElementById('toastArea');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto px-4 py-2.5 rounded-xl bg-black border border-vamont-gold text-xs font-semibold text-white shadow-xl shadow-vamont-gold/10 flex items-center gap-2 transform translate-y-2 opacity-0 transition-all";
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-vamont-gold"></span><span>${msg}</span>`;
+      area.appendChild(toast);
+      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 250);
+      }, 2500);
+    }
+
+    window.onload = () => {
+      init3D();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
